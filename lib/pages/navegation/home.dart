@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class BioLabHomePage extends StatefulWidget {
-  const BioLabHomePage({super.key});
+class GaSenseDataCard extends StatefulWidget {
+  const GaSenseDataCard({super.key});
 
   @override
-  State<BioLabHomePage> createState() => _BioLabHomePageState();
+  State<GaSenseDataCard> createState() => _GaSenseDataCardState();
 }
 
-class _BioLabHomePageState extends State<BioLabHomePage> {
+class _GaSenseDataCardState extends State<GaSenseDataCard> {
   late Map<String, dynamic> data;
   late TimeOfDay hora;
 
