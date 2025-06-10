@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/_core/constants.dart';
+import 'package:gasense/colors/colors.dart';
+import 'package:gasense/pages/auth/sign_up.dart';
+import 'package:gasense/pages/navegation/home.dart';
 import 'package:gasense/widgets/inputform.dart';
 
 class LogInPage extends StatefulWidget {
@@ -19,9 +22,9 @@ class _LogInPageState extends State<LogInPage> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [AppColors.white, AppColors.blue],
+            colors: [AppColors.white, background],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -29,10 +32,13 @@ class _LogInPageState extends State<LogInPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              width: 80,
-              height: 80,
-              child: Image.asset('assets/logo.png', fit: BoxFit.cover),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 600, maxHeight: 200),
+              child: Image.asset(
+                'assets/logo2.png',
+                fit: BoxFit.cover,
+                filterQuality: FilterQuality.high,
+              ),
             ),
             const SizedBox(height: 20),
             ClipRRect(
@@ -80,11 +86,13 @@ class _LogInPageState extends State<LogInPage> {
                             height: 48,
                             child: ElevatedButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => const TelaLogIn()),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => const GaSenseDataCard(),
+                                  ),
+                                );
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.grey,
@@ -124,7 +132,8 @@ class _LogInPageState extends State<LogInPage> {
                                 // Navigator.push(
                                 //   context,
                                 //   MaterialPageRoute(
-                                //       builder: (context) => const HomePage()),
+                                //      builder: (context) => const LogOnPage(),
+                                //   ),
                                 // );
                               },
                               style: ElevatedButton.styleFrom(
@@ -146,14 +155,14 @@ class _LogInPageState extends State<LogInPage> {
                                 children: [
                                   Image.asset(
                                     'assets/google.png',
-                                    width: 24,
-                                    height: 24,
+                                    width: 22,
+                                    height: 22,
                                   ),
                                   const SizedBox(width: 12),
                                   const Text(
                                     "Entre com o Google",
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       color: AppColors.grey,
                                     ),
                                   ),
@@ -164,11 +173,12 @@ class _LogInPageState extends State<LogInPage> {
                         ),
                         TextButton(
                           onPressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => {} ()),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SignUpPage(),
+                              ),
+                            );
                           },
                           child: const Text(
                             "Não tem uma conta? Se registre aqui!",

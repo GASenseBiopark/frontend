@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gasense/colors/colors.dart';
 import 'package:gasense/pages/auth/welcome.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -15,7 +16,7 @@ class BioLabApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'BioLab Monitor',
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color(0xFF0f172a),
+        scaffoldBackgroundColor: background,
         primaryColor: Colors.blueAccent,
       ),
       home: const WelcomePage(),

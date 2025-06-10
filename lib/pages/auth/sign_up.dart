@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/_core/constants.dart';
+import 'package:gasense/colors/colors.dart';
+import 'package:gasense/pages/auth/log_in.dart';
 import 'package:gasense/widgets/inputform.dart';
 
-class LogOnPage extends StatefulWidget {
-  const LogOnPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<LogOnPage> createState() => _LogOnPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LogOnPageState extends State<LogOnPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController senhaController = TextEditingController();
 
@@ -19,9 +21,9 @@ class _LogOnPageState extends State<LogOnPage> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [AppColors.white, AppColors.blue],
+            colors: [AppColors.white, background],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -29,10 +31,13 @@ class _LogOnPageState extends State<LogOnPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              width: 80,
-              height: 80,
-              child: Image.asset('assets/logo.png', fit: BoxFit.cover),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 600, maxHeight: 200),
+              child: Image.asset(
+                'assets/logo2.png',
+                fit: BoxFit.cover,
+                filterQuality: FilterQuality.high,
+              ),
             ),
             const SizedBox(height: 20),
             ClipRRect(
@@ -95,7 +100,10 @@ class _LogOnPageState extends State<LogOnPage> {
                               ),
                               child: const Text(
                                 "Log in",
-                                style: TextStyle(fontSize: 16),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
@@ -122,7 +130,7 @@ class _LogOnPageState extends State<LogOnPage> {
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color.fromARGB(
-                                  70,
+                                  255,
                                   255,
                                   255,
                                   255,
@@ -157,11 +165,12 @@ class _LogOnPageState extends State<LogOnPage> {
                         ),
                         TextButton(
                           onPressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => {} ()),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LogInPage(),
+                              ),
+                            );
                           },
                           child: const Text(
                             "Já tem uma conta? Entre aqui!",

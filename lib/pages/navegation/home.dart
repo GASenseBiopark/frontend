@@ -25,8 +25,8 @@ class _GaSenseDataCardState extends State<GaSenseDataCard> {
       'sensoresAtivos': 5,
       'ch4': {'valor': 450, 'percent': 25},
       'co2': {'valor': 850, 'percent': 65},
-      'glp': {'valor': 120, 'percent': 15},
-      'chama': {'detectado': false},
+      'glp': {'valor': 120, 'percent': 12},
+      'chama': {'detectado': true},
     };
   }
 
@@ -172,11 +172,14 @@ class _GaSenseDataCardState extends State<GaSenseDataCard> {
                 padding: const EdgeInsets.only(top: 4),
                 child: Text(
                   "Última atualização: $horaFormatada",
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  style: const TextStyle(
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    fontSize: 12,
+                  ),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             LayoutBuilder(
               builder: (context, constraints) {
                 int crossAxisCount = 1;

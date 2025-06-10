@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/_core/constants.dart';
 import 'package:gasense/pages/auth/log_in.dart';
-import 'package:gasense/pages/auth/log_on.dart';
+import 'package:gasense/pages/auth/sign_up.dart';
+import '../../colors/colors.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -9,9 +10,9 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [AppColors.white, AppColors.blue],
+            colors: [AppColors.white, background],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -21,8 +22,16 @@ class WelcomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 600, maxHeight: 200),
+              child: Image.asset(
+                'assets/logo2.png',
+                filterQuality: FilterQuality.high,
+                fit: BoxFit.cover,
+              ),
+            ),
             // Image.asset('../assets/logo.png', width: 120, height: 120),
-            const SizedBox(height: 20),
+            const SizedBox(height: 150),
             const Text(
               'Bem-vindo ao GASense!',
               style: TextStyle(
@@ -57,7 +66,7 @@ class WelcomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const LogOnPage()),
+                  MaterialPageRoute(builder: (context) => const SignUpPage()),
                 );
               },
               style: ElevatedButton.styleFrom(
