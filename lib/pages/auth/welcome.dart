@@ -22,20 +22,12 @@ class WelcomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 600, maxHeight: 200),
-              child: Image.asset(
-                'assets/logo2.png',
-                filterQuality: FilterQuality.high,
-                fit: BoxFit.cover,
-              ),
-            ),
-            // Image.asset('../assets/logo.png', width: 120, height: 120),
+            Image.asset('assets/logo2.png', width: 200, height: 200),
             const SizedBox(height: 150),
             const Text(
               'Bem-vindo ao GASense!',
               style: TextStyle(
-                color: AppColors.black,
+                color: AppColors.white,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),

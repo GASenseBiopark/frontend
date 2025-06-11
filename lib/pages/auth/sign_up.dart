@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/_core/constants.dart';
 import 'package:gasense/colors/colors.dart';
+import 'package:gasense/home.dart';
 import 'package:gasense/pages/auth/log_in.dart';
 import 'package:gasense/widgets/inputform.dart';
 
@@ -31,14 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 600, maxHeight: 200),
-              child: Image.asset(
-                'assets/logo2.png',
-                fit: BoxFit.cover,
-                filterQuality: FilterQuality.high,
-              ),
-            ),
+            Image.asset('assets/logo2.png', width: 150, height: 150),
             const SizedBox(height: 20),
             ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(30)),
@@ -72,17 +66,18 @@ class _SignUpPageState extends State<SignUpPage> {
                           icone: Icons.lock,
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 20, 15, 10),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                           child: SizedBox(
                             width: double.infinity,
                             height: 48,
                             child: ElevatedButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => const TelaLogIn()),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const HomePage(),
+                                  ),
+                                );
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.grey,
@@ -121,13 +116,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             width: double.infinity,
                             height: 48,
                             child: ElevatedButton(
-                              onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => const HomePage()),
-                                // );
-                              },
+                              onPressed: () {},
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color.fromARGB(
                                   255,
@@ -186,7 +175,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
           ],
         ),
       ),

@@ -17,7 +17,7 @@ class BioLabApp extends StatelessWidget {
       title: 'BioLab Monitor',
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: background,
-        primaryColor: Colors.blueAccent,
+        primaryColor: const Color.fromARGB(28, 68, 137, 255),
       ),
       home: const WelcomePage(),
     );

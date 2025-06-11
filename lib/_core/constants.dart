@@ -15,10 +15,20 @@ abstract class AppText {
     fontSize: 30,
     color: AppColors.blue,
   );
+  static const TextStyle subtitulo = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontSize: 24,
+    color: AppColors.blue,
+  );
   static const TextStyle texto = TextStyle(
     fontWeight: FontWeight.w400,
     fontSize: 16,
     color: AppColors.black,
+  );
+  static const TextStyle textoBranco = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 16,
+    color: AppColors.white,
   );
   static const TextStyle textoPequeno = TextStyle(
     fontWeight: FontWeight.w400,
