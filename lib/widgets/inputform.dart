@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gasense/_core/constants.dart';
+import 'package:gasense/constants/constants.dart';
 
 Widget inputFormulario({
   required TextEditingController controller,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gasense/colors/colors.dart';
+import 'package:gasense/constants/constants.dart';
 import 'package:gasense/pages/auth/welcome.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
