@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gasense/_core/constants.dart';
+import 'package:gasense/constants/constants.dart';
 import 'package:gasense/pages/auth/log_in.dart';
 import 'package:gasense/pages/auth/sign_up.dart';
-import '../../colors/colors.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);

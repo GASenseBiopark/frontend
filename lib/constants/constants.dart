@@ -9,6 +9,8 @@ abstract class AppColors {
   static const Color white = Color.fromRGBO(255, 255, 255, 1);
 }
 
+Color background = const Color.fromARGB(255, 46, 57, 87);
+
 abstract class AppText {
   static const TextStyle titulo = TextStyle(
     fontWeight: FontWeight.bold,
