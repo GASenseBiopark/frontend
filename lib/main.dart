@@ -16,7 +16,6 @@ class BioLabApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'BioLab Monitor',
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: background,
         primaryColor: const Color.fromARGB(28, 68, 137, 255),
       ),
       home: const WelcomePage(),

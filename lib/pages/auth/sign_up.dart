@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
+import 'package:gasense/pages/navegation/home.dart';
 import 'package:gasense/pages/auth/log_in.dart';
 import 'package:gasense/widgets/inputform.dart';
 
@@ -18,15 +19,19 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [AppColors.white, background],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            transform: GradientRotation(1),
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color.fromARGB(255, 255, 255, 255),
+              Color.fromARGB(255, 236, 236, 236),
+            ],
           ),
         ),
+        width: double.infinity,
+        height: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

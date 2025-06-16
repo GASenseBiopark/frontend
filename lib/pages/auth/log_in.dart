@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
-import 'package:gasense/home.dart';
+import 'package:gasense/pages/navegation/home.dart';
 import 'package:gasense/pages/auth/sign_up.dart';
 import 'package:gasense/widgets/inputform.dart';
 
@@ -19,20 +19,23 @@ class _LogInPageState extends State<LogInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 30),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [AppColors.white, background],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            transform: GradientRotation(1),
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color.fromARGB(255, 255, 255, 255),
+              Color.fromARGB(255, 236, 236, 236),
+            ],
           ),
         ),
+        width: double.infinity,
+        height: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/logo2.png', width: 150, height: 150),
-
             ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(30)),
               child: Container(
@@ -96,7 +99,7 @@ class _LogInPageState extends State<LogInPage> {
                         ),
                       ),
                     ),
-                    const Text("-OR-", style: AppText.textoPequeno),
+                    const Text("-OU-", style: AppText.textoPequeno),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(15, 10, 15, 5),
                       child: SizedBox(

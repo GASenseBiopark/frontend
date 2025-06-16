@@ -11,9 +11,13 @@ class WelcomePage extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [AppColors.white, background],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            transform: GradientRotation(1),
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color.fromARGB(255, 255, 255, 255),
+              Color.fromARGB(255, 236, 236, 236),
+            ],
           ),
         ),
         width: double.infinity,
@@ -26,7 +30,7 @@ class WelcomePage extends StatelessWidget {
             const Text(
               'Bem-vindo ao GASense!',
               style: TextStyle(
-                color: AppColors.white,
+                color: AppColors.black,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
