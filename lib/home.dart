@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
+import 'package:gasense/pages/auth/sign_up.dart';
 import 'package:gasense/pages/navegation/new_device.dart';
+import 'package:gasense/widgets/inputform.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,72 +29,163 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Define se é desktop
+    final bool isDesktop = screenWidth >= 800;
+
     return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: AppColors.blue,
-        title: Center(
-          child: Text(
-            "Dispositivos",
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 25,
-              color: Colors.white,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFFFFFFFF), Color(0xFFECECEC)],
+          ),
+        ),
+        width: double.infinity,
+        height: double.infinity,
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('assets/logo2.png', width: 150, height: 150),
+
+                // Card adaptável
+                Container(
+                  width: isDesktop ? 400 : screenWidth * 0.85,
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(isDesktop ? 30 : 0),
+                    boxShadow:
+                        isDesktop
+                            ? [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 20,
+                                offset: const Offset(0, 10),
+                              ),
+                            ]
+                            : [],
+                  ),
+                  child: Column(
+                    children: [
+                      Text("Entrar", style: AppText.titulo),
+                      const SizedBox(height: 20),
+                      // inputFormulario(
+                      //   controller: emailController,
+                      //   textoLabel: "Email",
+                      //   icone: Icons.email,
+                      // ),
+                      // const SizedBox(height: 10),
+                      // inputFormulario(
+                      //   controller: senhaController,
+                      //   textoLabel: "Senha",
+                      //   icone: Icons.lock,
+                      // ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Esqueceu a senha?",
+                            style: AppText.textoPequeno,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 48,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HomePage(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.grey,
+                            foregroundColor: Colors.white,
+                            elevation: 6,
+                            shadowColor: AppColors.blue.withOpacity(0.8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          child: const Text(
+                            "Log in",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text("-OU-", style: AppText.textoPequeno),
+                      const SizedBox(height: 10),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 48,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                              246,
+                              255,
+                              255,
+                              255,
+                            ),
+                            foregroundColor: Colors.white,
+                            elevation: 6,
+                            shadowColor: AppColors.black.withOpacity(0.8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/google.png',
+                                width: 22,
+                                height: 22,
+                              ),
+                              const SizedBox(width: 12),
+                              const Text(
+                                "Entre com o Google",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: AppColors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUpPage(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "Não tem uma conta? Se registre aqui!",
+                          style: TextStyle(color: Colors.grey, fontSize: 12),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),
-      ),
-      body:
-          dispositivos.isEmpty
-              ? const Center(
-                child: Text(
-                  'Nenhum dispositivo adicionado',
-                  style: AppText.texto,
-                ),
-              )
-              : ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemCount: dispositivos.length,
-                itemBuilder: (context, index) {
-                  final item = dispositivos[index];
-                  return Container(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.grey, width: 1.5),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Card(
-                      color: AppColors.grey200,
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: ListTile(
-                        tileColor: AppColors.grey200,
-                        leading: Image.asset(
-                          'assets/device.png',
-                          width: 50,
-                          height: 22,
-                        ),
-                        title: Text(
-                          'Dispositivo ${index + 1}',
-                          style: AppText.textoBranco,
-                        ),
-                        subtitle: Text(
-                          "Código: ${item['codigo'] ?? 'Sem código'}",
-                          style: AppText.textoBranco,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _navegarParaAdicionarDispositivo,
-        backgroundColor: AppColors.blue,
-        shape: const CircleBorder(),
-        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

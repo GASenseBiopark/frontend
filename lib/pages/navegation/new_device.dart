@@ -24,10 +24,11 @@ class _NewDevicePageState extends State<NewDevicePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back_rounded, color: AppColors.black700),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -37,9 +38,8 @@ class _NewDevicePageState extends State<NewDevicePage> {
         ),
         title: const Text(
           "Novo Dispositivo",
-          style: TextStyle(color: Colors.white, fontSize: 22),
+          style: TextStyle(color: AppColors.black700, fontSize: 22),
         ),
-        backgroundColor: AppColors.blue,
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -55,25 +55,49 @@ class _NewDevicePageState extends State<NewDevicePage> {
         ),
         width: double.infinity,
         height: double.infinity,
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(height: 20),
-                Image.asset('../assets/device.png', width: 220),
-                const SizedBox(height: 50),
-                inputFormulario(
-                  controller: _codigoController,
-                  textoLabel: "Código",
-                  icone: Icons.numbers,
-                ),
-                const SizedBox(height: 30),
-                Center(
-                  child: SizedBox(
-                    width: 220,
-                    height: 50,
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: kToolbarHeight + MediaQuery.of(context).padding.top,
+          ),
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(height: 20),
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Sombra (menor que a imagem)
+                      Container(
+                        width: 270, // menor que 200
+                        height: 270, // menor que 200
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withAlpha(50),
+                              blurRadius: 40,
+                              offset: Offset(0, 8),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      // Imagem principal
+                      Image.asset('../assets/device.png', width: 350),
+                    ],
+                  ),
+                  const SizedBox(height: 50),
+                  inputFormulario(
+                    controller: _codigoController,
+                    textoLabel: "Código",
+                    icone: Icons.numbers,
+                  ),
+                  const SizedBox(height: 15),
+                  SizedBox(
+                    height: 45,
                     child: ElevatedButton(
                       onPressed: () {
                         final codigo = _codigoController.text.trim();
@@ -81,10 +105,6 @@ class _NewDevicePageState extends State<NewDevicePage> {
                           Navigator.pop(context, {'codigo': codigo});
                         }
                       },
-                      child: Text(
-                        "Adicionar dispositivo",
-                        style: AppText.textoBranco,
-                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.grey,
                         foregroundColor: Colors.white,
@@ -93,13 +113,17 @@ class _NewDevicePageState extends State<NewDevicePage> {
                           vertical: 16,
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(15),
                         ),
+                      ),
+                      child: Text(
+                        "Adicionar dispositivo",
+                        style: AppText.textoBranco,
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

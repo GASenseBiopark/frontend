@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 abstract class AppColors {
   static const Color black = Color(0xFF000000);
-  static const Color black700 = Color(0xFF23272A);
-  static const Color blue100 = Color(0xFF45484D);
+  static const Color black700 = Color.fromARGB(255, 64, 64, 64);
+  static const Color blue100 = Color.fromARGB(255, 88, 88, 88);
   static const Color blue = Color.fromARGB(255, 32, 59, 102);
   static const Color grey = Color(0xFF767676);
   static const Color grey200 = Color(0xFF9B9B9B);
@@ -17,27 +18,27 @@ abstract class AppColors {
 Color background = const Color.fromARGB(255, 46, 57, 87);
 
 abstract class AppText {
-  static const TextStyle titulo = TextStyle(
+  static TextStyle titulo = GoogleFonts.poppins(
     fontWeight: FontWeight.bold,
     fontSize: 30,
     color: AppColors.blue,
   );
-  static const TextStyle subtitulo = TextStyle(
+  static TextStyle subtitulo = GoogleFonts.poppins(
     fontWeight: FontWeight.w600,
     fontSize: 24,
     color: AppColors.blue,
   );
-  static const TextStyle texto = TextStyle(
+  static TextStyle texto = GoogleFonts.poppins(
     fontWeight: FontWeight.w400,
-    fontSize: 16,
+    fontSize: 14,
     color: AppColors.black,
   );
-  static const TextStyle textoBranco = TextStyle(
+  static TextStyle textoBranco = GoogleFonts.poppins(
     fontWeight: FontWeight.w400,
-    fontSize: 16,
+    fontSize: 14,
     color: AppColors.white,
   );
-  static const TextStyle textoPequeno = TextStyle(
+  static TextStyle textoPequeno = GoogleFonts.poppins(
     fontWeight: FontWeight.w400,
     fontSize: 12,
     color: AppColors.grey,

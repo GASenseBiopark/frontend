@@ -46,7 +46,7 @@ class _LogInPageState extends State<LogInPage> {
                 ),
                 child: Column(
                   children: [
-                    const Text("Entrar", style: AppText.titulo),
+                    Text("Entrar", style: AppText.titulo),
                     const SizedBox(height: 20),
                     inputFormulario(
                       controller: emailController,
@@ -63,7 +63,7 @@ class _LogInPageState extends State<LogInPage> {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {},
-                        child: const Text(
+                        child: Text(
                           "Esqueceu a senha?",
                           style: AppText.textoPequeno,
                         ),
@@ -89,7 +89,7 @@ class _LogInPageState extends State<LogInPage> {
                             elevation: 6,
                             shadowColor: AppColors.blue.withOpacity(0.8),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(15),
                             ),
                           ),
                           child: const Text(
@@ -99,7 +99,7 @@ class _LogInPageState extends State<LogInPage> {
                         ),
                       ),
                     ),
-                    const Text("-OU-", style: AppText.textoPequeno),
+                    Text("-OU-", style: AppText.textoPequeno),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(15, 10, 15, 5),
                       child: SizedBox(
@@ -118,7 +118,7 @@ class _LogInPageState extends State<LogInPage> {
                             elevation: 6,
                             shadowColor: AppColors.black.withOpacity(0.8),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(15),
                             ),
                           ),
                           child: Row(

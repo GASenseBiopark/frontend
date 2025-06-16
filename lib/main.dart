@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
-import 'package:gasense/home.dart';
+import 'package:gasense/pages/auth/welcome.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -15,10 +15,52 @@ class BioLabApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'BioLab Monitor',
-      theme: ThemeData.dark().copyWith(
-        primaryColor: const Color.fromARGB(28, 68, 137, 255),
+      theme: ThemeData(
+        colorScheme: ColorScheme(
+          brightness: Brightness.light,
+          primary: Colors.white, // cor principal clara
+          onPrimary: Colors.black, // texto sobre branco
+
+          secondary: AppColors.grey, // cor de destaque secundária
+          onSecondary: Colors.white, // texto sobre elementos secundários
+
+          surface: AppColors.grey200, // elementos neutros como cards
+          onSurface: Colors.black, // texto sobre surface
+
+          error: Colors.red,
+          onError: Colors.white,
+        ),
+
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.black,
+          elevation: 0,
+          centerTitle: true,
+        ),
+
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: AppColors.grey,
+          foregroundColor: Colors.white,
+          shape: CircleBorder(),
+        ),
+
+        cardTheme: CardTheme(
+          color: AppColors.grey200,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          elevation: 2,
+        ),
+
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.black),
+          bodyMedium: TextStyle(color: AppColors.grey),
+          titleLarge: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+          titleMedium: TextStyle(color: AppColors.grey),
+        ),
       ),
-      home: const HomePage(),
+      home: const WelcomePage(),
     );
   }
 }

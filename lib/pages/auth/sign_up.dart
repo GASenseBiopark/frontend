@@ -49,7 +49,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
                       children: [
-                        const Text("Criar uma conta", style: AppText.titulo),
+                        Text("Criar uma conta", style: AppText.titulo),
                         const SizedBox(height: 20),
                         inputFormulario(
                           controller: emailController,
