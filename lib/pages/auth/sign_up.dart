@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
+import 'package:gasense/home.dart';
 import 'package:gasense/pages/auth/log_in.dart';
 import 'package:gasense/widgets/inputform.dart';
 

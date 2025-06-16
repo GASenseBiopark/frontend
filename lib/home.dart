@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gasense/_core/constants.dart';
+import 'package:gasense/constants/constants.dart';
 import 'package:gasense/pages/navegation/new_device.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,12 +30,13 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.blue,
-        title: const Center(
+        title: Center(
           child: Text(
             "Dispositivos",
             style: TextStyle(
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w400,
               fontSize: 25,
               color: Colors.white,
             ),
@@ -55,18 +56,33 @@ class _HomePageState extends State<HomePage> {
                 itemCount: dispositivos.length,
                 itemBuilder: (context, index) {
                   final item = dispositivos[index];
-                  return Card(
-                    elevation: 3,
+                  return Container(
                     margin: const EdgeInsets.symmetric(vertical: 8),
-                    child: ListTile(
-                      leading: Image.asset(
-                        'assets/device.png',
-                        width: 50,
-                        height: 22,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: AppColors.grey, width: 1.5),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Card(
+                      color: AppColors.grey200,
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      title: Text('Dispositivo ${index + 1}'),
-                      subtitle: Text(
-                        "Código: ${item['codigo'] ?? 'Sem código'}",
+                      child: ListTile(
+                        tileColor: AppColors.grey200,
+                        leading: Image.asset(
+                          'assets/device.png',
+                          width: 50,
+                          height: 22,
+                        ),
+                        title: Text(
+                          'Dispositivo ${index + 1}',
+                          style: AppText.textoBranco,
+                        ),
+                        subtitle: Text(
+                          "Código: ${item['codigo'] ?? 'Sem código'}",
+                          style: AppText.textoBranco,
+                        ),
                       ),
                     ),
                   );

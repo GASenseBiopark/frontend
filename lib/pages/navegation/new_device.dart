@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gasense/_core/constants.dart';
+import 'package:gasense/constants/constants.dart';
 import 'package:gasense/home.dart';
 import 'package:gasense/widgets/inputform.dart';
 
