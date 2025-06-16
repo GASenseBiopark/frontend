@@ -14,6 +14,7 @@ Widget inputFormulario({
       keyboardType:
           obscureText ? TextInputType.text : TextInputType.emailAddress,
       obscureText: obscureText,
+      style: const TextStyle(color: Colors.black87, fontSize: 16),
       decoration: InputDecoration(
         prefixIconColor: AppColors.grey,
         prefixIcon: Icon(icone),

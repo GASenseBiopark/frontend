@@ -47,7 +47,6 @@ class AppDatabase {
             id_usuario TEXT
           )
         ''');
-        // Adicione outras tabelas conforme necessário (leituras, alertas, etc.)
       },
     );
   }
