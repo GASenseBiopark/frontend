@@ -1,42 +1,79 @@
-import 'package:sqflite/sqflite.dart';
-import 'app_database.dart';
-import '../models/usuario.dart'; // Você precisaria de um modelo Usuario
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:gasense/models/usuario.dart';
 
 class UsuarioDAO {
-  final AppDatabase _appDatabase = AppDatabase();
+  String baseUrl = 'http://15.229.0.216:8080';
+  Future<int> adicionarEditar(Usuario usuario) async {
+    final url = Uri.parse('$baseUrl/gravarUsuarios');
 
-  Future<int> inserir(Usuario usuario) async {
-    final db = await _appDatabase.database;
-    return await db.insert(
-      'usuarios',
-      usuario.toMap(), // Método toMap() no seu modelo Usuario
-      conflictAlgorithm: ConflictAlgorithm.replace,
+    // Monta o corpo da requisição
+    Map<String, dynamic> dados = {
+      'id_usuario': usuario.idUsuario,
+      'nome': usuario.nome,
+      'email': usuario.email,
+      'senha':
+          usuario
+              .senhaHash, // aqui você envia a senha pura e o backend gera o hash
+      'data_cadastro': usuario.dataCadastro,
+    };
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(dados),
     );
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      return json['id_usuario'];
+    } else if (response.statusCode == 409) {
+      throw 'E-mail já cadastrado';
+    } else {
+      throw 'Erro ao adicionar/editar usuário: ${response.body}';
+    }
   }
 
-  Future<Usuario?> buscarPorEmail(String email) async {
-    final db = await _appDatabase.database;
-    final List<Map<String, dynamic>> maps = await db.query(
-      'usuarios',
-      where: 'email = ?',
-      whereArgs: [email],
+  Future<Usuario?> pesquisar(String email, String senha) async {
+    final url = Uri.parse('$baseUrl/pesquisarUsuarios');
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email, 'senha': senha}),
     );
-    if (maps.isNotEmpty) {
-      return Usuario.fromMap(
-        maps.first,
-      ); // Método fromMap() no seu modelo Usuario
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      return Usuario(
+        idUsuario: json['id_usuario'],
+        nome: json['nome'],
+        email: json['email'],
+        senhaHash: '', // não retorna o hash, por segurança
+        dataCadastro: json['data_cadastro'],
+        admin: false, // se quiser implementar admin, pode adaptar
+      );
+    } else if (response.statusCode == 403) {
+      // usuário não encontrado ou senha inválida
+      return null;
+    } else {
+      throw Exception('Erro ao pesquisar usuário: ${response.body}');
     }
-    return null;
   }
 
   Future<int> deletar(int idUsuario) async {
-    final db = await _appDatabase.database;
-    return await db.delete(
-      'usuarios',
-      where: 'id_usuario = ?',
-      whereArgs: [idUsuario],
-    );
-  }
+    final url = Uri.parse('$baseUrl/deletarUsuario');
 
-  // Outros métodos CRUD...
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'id_usuario': idUsuario}),
+    );
+
+    if (response.statusCode == 200) {
+      return 1; // sucesso
+    } else {
+      throw Exception('Erro ao deletar usuário: ${response.body}');
+    }
+  }
 }

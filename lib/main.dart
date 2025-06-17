@@ -25,7 +25,12 @@ class BioLabApp extends StatelessWidget {
           onSecondary: Colors.white, // texto sobre elementos secundários
 
           surface: AppColors.grey200, // elementos neutros como cards
-          onSurface: Colors.black, // texto sobre surface
+          onSurface: const Color.fromARGB(
+            255,
+            255,
+            255,
+            255,
+          ), // texto sobre surface
 
           error: Colors.red,
           onError: Colors.white,
@@ -33,7 +38,7 @@ class BioLabApp extends StatelessWidget {
 
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
-          foregroundColor: Colors.black,
+          foregroundColor: Color.fromARGB(255, 255, 255, 255),
           elevation: 0,
           centerTitle: true,
         ),

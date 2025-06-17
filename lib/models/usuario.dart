@@ -3,7 +3,7 @@ class Usuario {
   String nome;
   String email;
   String senhaHash;
-  String? dataCadastro;
+  DateTime? dataCadastro;
   bool admin;
 
   Usuario({
@@ -21,7 +21,7 @@ class Usuario {
       'nome': nome,
       'email': email,
       'senha_hash': senhaHash,
-      'data_cadastro': dataCadastro,
+      'data_cadastro': dataCadastro?.toIso8601String(),
       'admin': admin ? 1 : 0, // SQLite armazena boolean como int
     };
   }
@@ -32,7 +32,12 @@ class Usuario {
       nome: map['nome'],
       email: map['email'],
       senhaHash: map['senha_hash'],
-      dataCadastro: map['data_cadastro'],
+      dataCadastro:
+          map['data_cadastro'] is String
+              ? DateTime.parse(map['data_cadastro'])
+              : map['data_cadastro'] is int
+              ? DateTime.fromMillisecondsSinceEpoch(map['data_cadastro'])
+              : map['data_cadastro'] as DateTime?,
       admin: map['admin'] == 1,
     );
   }

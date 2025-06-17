@@ -90,7 +90,7 @@ class _NewDevicePageState extends State<NewDevicePage> {
                     ],
                   ),
                   const SizedBox(height: 50),
-                  inputFormulario(
+                  InputFormulario(
                     controller: _codigoController,
                     textoLabel: "Código",
                     icone: Icons.numbers,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gasense/dao/usuario_dao.dart';
+import 'package:gasense/models/usuario.dart';
 import 'package:gasense/constants/constants.dart';
 import 'package:gasense/pages/navegation/home.dart';
 import 'package:gasense/pages/auth/log_in.dart';
@@ -15,127 +17,220 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController nomeController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController senhaController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  String? _emailErroServidor;
+
+  bool _isLoading = false;
+
+  Future<void> registrarUsuario() async {
+    setState(() {
+      _isLoading = true;
+      _emailErroServidor = null;
+    });
+
+    try {
+      Usuario usuario = Usuario(
+        idUsuario: 0, // ou null, depende do seu modelo
+        nome: nomeController.text,
+        email: emailController.text,
+        senhaHash: senhaController.text, // senha pura, o backend faz o hash
+        dataCadastro: DateTime.now(),
+      );
+
+      UsuarioDAO dao = UsuarioDAO();
+      int idGerado = await dao.adicionarEditar(usuario);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Usuário registrado com sucesso! ID: $idGerado"),
+        ),
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } catch (e) {
+      String mensagem = e.toString();
+      if (mensagem.contains('E-mail já cadastrado')) {
+        setState(() {
+          _emailErroServidor = 'Este email já está em uso.';
+        });
+        // Força o validator a rodar de novo:
+        _formKey.currentState!.validate();
+      } else {
+        // Erro genérico
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Erro ao registrar: $mensagem")));
+      }
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final bool isDesktop = screenWidth >= 800;
 
-    Widget content = Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        if (!isDesktop) const SizedBox(height: 60),
-
-        Text(
-          "Criar uma conta",
-          style: AppText.titulo.copyWith(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: AppColors.blue,
+    Widget content = Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (!isDesktop) const SizedBox(height: 60),
+          Text(
+            "Criar uma conta",
+            style: AppText.titulo.copyWith(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: AppColors.blue,
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          "Monitore a segurança do seu laboratório em tempo real",
-          textAlign: TextAlign.center,
-          style: AppText.textoPequeno.copyWith(
-            fontSize: 14,
-            color: Colors.grey[600],
+          const SizedBox(height: 8),
+          Text(
+            "Monitore a segurança do seu laboratório em tempo real",
+            textAlign: TextAlign.center,
+            style: AppText.textoPequeno.copyWith(
+              fontSize: 14,
+              color: Colors.grey[600],
+            ),
           ),
-        ),
-        const SizedBox(height: 40),
-        inputFormulario(
-          controller: nomeController,
-          textoLabel: "Nome",
-          icone: Icons.person_2,
-        ),
-        const SizedBox(height: 16),
-        inputFormulario(
-          controller: emailController,
-          textoLabel: "Email",
-          icone: Icons.email,
-        ),
-        const SizedBox(height: 16),
-        inputFormulario(
-          controller: senhaController,
-          textoLabel: "Senha",
-          icone: Icons.lock,
-        ),
-        const SizedBox(height: 24),
-        SizedBox(
-          width: double.infinity,
-          height: 48,
-          child: ElevatedButton(
+          const SizedBox(height: 40),
+          InputFormulario(
+            controller: nomeController,
+            textoLabel: "Nome",
+            icone: Icons.person_rounded,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Preencha o nome';
+              }
+              if (value.length < 5) {
+                return 'Nome deve ter no mínimo 5 caracteres';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 16),
+          InputFormulario(
+            controller: emailController,
+            textoLabel: "Email",
+            icone: Icons.email_rounded,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Preencha o e-mail';
+              }
+              if (!value.contains(".")) {
+                return 'E-mail inválido';
+              }
+              if (!value.contains('@')) {
+                return 'E-mail inválido';
+              }
+              if (_emailErroServidor != null) {
+                return _emailErroServidor;
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 16),
+          InputFormulario(
+            controller: senhaController,
+            textoLabel: "Senha",
+            icone: Icons.lock_rounded,
+            isSenha: true,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Preencha a senha';
+              }
+              if (value.length < 8) {
+                return 'Senha deve ter no mínimo 8 caracteres';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 24),
+          SizedBox(
+            width: double.infinity,
+            height: 48,
+            child: ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  if (!_isLoading) {
+                    registrarUsuario();
+                  }
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.grey,
+                foregroundColor: Colors.white,
+                elevation: 6,
+                shadowColor: AppColors.blue.withOpacity(0.8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+              child:
+                  _isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text("Registrar", style: TextStyle(fontSize: 16)),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              Expanded(child: Divider(color: AppColors.grey)),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text("OU", style: AppText.textoPequeno),
+              ),
+              Expanded(child: Divider(color: AppColors.grey)),
+            ],
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            height: 48,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(246, 255, 255, 255),
+                elevation: 6,
+                shadowColor: AppColors.black.withOpacity(0.8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/google.png', width: 22, height: 22),
+                  const SizedBox(width: 12),
+                  const Text(
+                    "Entrar com o Google",
+                    style: TextStyle(fontSize: 14, color: AppColors.grey),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 30),
+          TextButton(
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
+                MaterialPageRoute(builder: (context) => const LogInPage()),
               );
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.grey,
-              foregroundColor: Colors.white,
-              elevation: 6,
-              shadowColor: AppColors.blue.withOpacity(0.8),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
-            child: const Text("Registrar", style: TextStyle(fontSize: 16)),
-          ),
-        ),
-        const SizedBox(height: 20),
-        Row(
-          children: [
-            Expanded(child: Divider(color: AppColors.grey)),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text("OU", style: AppText.textoPequeno),
-            ),
-            Expanded(child: Divider(color: AppColors.grey)),
-          ],
-        ),
-        const SizedBox(height: 20),
-        SizedBox(
-          width: double.infinity,
-          height: 48,
-          child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(246, 255, 255, 255),
-              elevation: 6,
-              shadowColor: AppColors.black.withOpacity(0.8),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/google.png', width: 22, height: 22),
-                const SizedBox(width: 12),
-                const Text(
-                  "Entrar com o Google",
-                  style: TextStyle(fontSize: 14, color: AppColors.grey),
-                ),
-              ],
+            child: const Text(
+              "Já tem uma conta? Entre aqui!",
+              style: TextStyle(color: Colors.grey, fontSize: 12),
             ),
           ),
-        ),
-        const SizedBox(height: 30),
-        TextButton(
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const LogInPage()),
-            );
-          },
-          child: const Text(
-            "Já tem uma conta? Entre aqui!",
-            style: TextStyle(color: Colors.grey, fontSize: 12),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
 
     return Scaffold(
