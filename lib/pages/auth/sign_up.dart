@@ -12,173 +12,174 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final TextEditingController nomeController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController senhaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final bool isDesktop = screenWidth >= 800;
+
+    Widget content = Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        if (!isDesktop) const SizedBox(height: 60),
+
+        Text(
+          "Criar uma conta",
+          style: AppText.titulo.copyWith(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: AppColors.blue,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          "Monitore a segurança do seu laboratório em tempo real",
+          textAlign: TextAlign.center,
+          style: AppText.textoPequeno.copyWith(
+            fontSize: 14,
+            color: Colors.grey[600],
+          ),
+        ),
+        const SizedBox(height: 40),
+        inputFormulario(
+          controller: nomeController,
+          textoLabel: "Nome",
+          icone: Icons.person_2,
+        ),
+        const SizedBox(height: 16),
+        inputFormulario(
+          controller: emailController,
+          textoLabel: "Email",
+          icone: Icons.email,
+        ),
+        const SizedBox(height: 16),
+        inputFormulario(
+          controller: senhaController,
+          textoLabel: "Senha",
+          icone: Icons.lock,
+        ),
+        const SizedBox(height: 24),
+        SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.grey,
+              foregroundColor: Colors.white,
+              elevation: 6,
+              shadowColor: AppColors.blue.withOpacity(0.8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+            ),
+            child: const Text("Registrar", style: TextStyle(fontSize: 16)),
+          ),
+        ),
+        const SizedBox(height: 20),
+        Row(
+          children: [
+            Expanded(child: Divider(color: AppColors.grey)),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text("OU", style: AppText.textoPequeno),
+            ),
+            Expanded(child: Divider(color: AppColors.grey)),
+          ],
+        ),
+        const SizedBox(height: 20),
+        SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(246, 255, 255, 255),
+              elevation: 6,
+              shadowColor: AppColors.black.withOpacity(0.8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('assets/google.png', width: 22, height: 22),
+                const SizedBox(width: 12),
+                const Text(
+                  "Entrar com o Google",
+                  style: TextStyle(fontSize: 14, color: AppColors.grey),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 30),
+        TextButton(
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const LogInPage()),
+            );
+          },
+          child: const Text(
+            "Já tem uma conta? Entre aqui!",
+            style: TextStyle(color: Colors.grey, fontSize: 12),
+          ),
+        ),
+      ],
+    );
+
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
-            transform: GradientRotation(1),
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color.fromARGB(255, 255, 255, 255),
-              Color.fromARGB(255, 236, 236, 236),
-            ],
+            colors: [Color(0xFFFFFFFF), Color(0xFFECECEC)],
           ),
         ),
         width: double.infinity,
         height: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/logo2.png', width: 150, height: 150),
-            const SizedBox(height: 20),
-            ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(30)),
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.85,
-                height: MediaQuery.of(context).size.height * 0.75,
-                padding: const EdgeInsets.all(24),
-                decoration: const BoxDecoration(color: AppColors.white),
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      children: [
-                        Text("Criar uma conta", style: AppText.titulo),
-                        const SizedBox(height: 20),
-                        inputFormulario(
-                          controller: emailController,
-                          textoLabel: "Nome",
-                          icone: Icons.person_2,
-                        ),
-                        const SizedBox(height: 10),
-                        inputFormulario(
-                          controller: emailController,
-                          textoLabel: "Email",
-                          icone: Icons.email,
-                        ),
-                        const SizedBox(height: 10),
-                        inputFormulario(
-                          controller: senhaController,
-                          textoLabel: "Senha",
-                          icone: Icons.lock,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 48,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const HomePage(),
-                                  ),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.grey,
-                                foregroundColor: const Color.fromARGB(
-                                  53,
-                                  255,
-                                  255,
-                                  255,
-                                ),
-                                elevation: 6,
-                                shadowColor: AppColors.blue.withOpacity(0.8),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              child: const Text(
-                                "Log in",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
+        child: Center(
+          child: SingleChildScrollView(
+            child:
+                isDesktop
+                    ? Container(
+                      width: 500,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 32,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withAlpha(36),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10),
                           ),
-                        ),
-                        const Text(
-                          "-OR-",
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 10, 15, 5),
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 48,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color.fromARGB(
-                                  255,
-                                  255,
-                                  255,
-                                  255,
-                                ),
-                                foregroundColor: AppColors.blue,
-                                elevation: 6,
-                                shadowColor: Colors.black.withOpacity(0.8),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/google.png',
-                                    width: 24,
-                                    height: 24,
-                                  ),
-                                  const SizedBox(width: 12),
-                                  const Text(
-                                    "Entre com o Google",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: AppColors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LogInPage(),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            "Já tem uma conta? Entre aqui!",
-                            style: TextStyle(
-                              color: AppColors.grey,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
+                      child: content,
+                    )
+                    : Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 32,
+                      ),
+                      child: content,
                     ),
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

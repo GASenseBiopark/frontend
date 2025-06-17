@@ -27,23 +27,17 @@ class WelcomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/logo2.png', width: 300, height: 300),
-              const SizedBox(height: 150),
-              const Text(
-                'Bem-vindo ao GASense!',
-                style: TextStyle(
-                  color: AppColors.black700,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              Spacer(flex: 2),
+              Image.asset('assets/logo2.png', width: 350, height: 350),
+              Spacer(flex: 1),
+              Text('Bem-vindo ao GASense!', style: AppText.subtitulo),
               const SizedBox(height: 40),
               SizedBox(
                 width: double.infinity,
                 height: 45,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const LogInPage(),
@@ -75,7 +69,7 @@ class WelcomePage extends StatelessWidget {
                 height: 45,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const SignUpPage(),
@@ -96,6 +90,7 @@ class WelcomePage extends StatelessWidget {
                   child: Text('Criar Conta', style: AppText.texto),
                 ),
               ),
+              Spacer(flex: 1),
             ],
           ),
         ),
