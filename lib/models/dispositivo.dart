@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Dispositivo {
   final String idDispositivo;
   final String nome;
@@ -66,5 +68,9 @@ class Dispositivo {
       'complemento': complemento,
       'data_cadastro_localizacao': dataCadastroLocalizacao?.toIso8601String(),
     };
+  }
+
+  String toJson() {
+    return jsonEncode(toMap());
   }
 }

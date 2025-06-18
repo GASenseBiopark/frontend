@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
 import 'package:gasense/models/dispositivo.dart';
 import 'package:gasense/pages/auth/welcome.dart';
-import 'package:gasense/pages/navegation/new_device.dart';
+import 'package:gasense/pages/navegation/tela_graficos.dart';
+import 'package:gasense/pages/navegation/tela_novo_dispositivo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,7 +14,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Map<String, String>> dispositivos = [];
+  List<Map<String, dynamic>> dispositivos = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDispositivos();
+  }
+
+  void _loadDispositivos() async {
+    final prefs = await SharedPreferences.getInstance();
+    final listaCodigos = prefs.getStringList('dispositivos') ?? [];
+
+    setState(() {
+      dispositivos = listaCodigos.map((e) => {'codigo': e, 'nome': e}).toList();
+    });
+  }
 
   void _navegarParaAdicionarDispositivo() async {
     final resultado = await Navigator.push(
@@ -118,18 +134,90 @@ class _HomePageState extends State<HomePage> {
                     itemCount: dispositivos.length,
                     itemBuilder: (context, index) {
                       final item = dispositivos[index];
-                      return Card(
-                        elevation: 3,
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        child: ListTile(
-                          leading: Image.asset(
-                            'assets/device.png',
-                            width: 50,
-                            height: 22,
-                          ),
-                          title: Text(item['nome'] ?? 'Sem nome'),
-                          subtitle: Text(
-                            "Código: ${item['codigo'] ?? 'Sem código'}",
+                      return Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withAlpha(36),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Material(
+                          color:
+                              Colors
+                                  .transparent,
+                          borderRadius: BorderRadius.circular(20),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(20),
+                            splashColor: AppColors.grey200.withAlpha(
+                              72,
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TelaGraficos(
+                                    // idDispositivo: item['codigo'],
+                                  ),
+                                ),
+                              );
+                            },
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 12,
+                                horizontal: 16,
+                              ),
+                              leading: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    width: 25,
+                                    height: 25,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withAlpha(80),
+                                          blurRadius: 15,
+                                          offset: Offset(0, 8),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Image.asset(
+                                    '../assets/device.png',
+                                    fit: BoxFit.contain,
+                                    width: 60,
+                                  ),
+                                ],
+                              ),
+                              title: Text(
+                                item['nome'] ?? 'Sem nome',
+                                style: AppText.titulo.copyWith(
+                                  fontSize: 16,
+                                  color: AppColors.black700,
+                                ),
+                              ),
+                              subtitle: Padding(
+                                padding: const EdgeInsets.only(top: 4),
+                                child: Text(
+                                  "Código: ${item['codigo'] ?? 'Sem código'}",
+                                  style: AppText.textoPequeno.copyWith(
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                              ),
+                              trailing: const Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 18,
+                                color: Colors.grey,
+                              ),
+                            ),
                           ),
                         ),
                       );

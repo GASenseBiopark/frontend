@@ -3,7 +3,9 @@ import 'package:gasense/constants/constants.dart';
 import 'package:gasense/dao/dispositivo_dao.dart';
 import 'package:gasense/models/dispositivo.dart';
 import 'package:gasense/pages/navegation/home.dart';
+import 'package:gasense/save_data/salvar_dados_dispositivos.dart';
 import 'package:gasense/widgets/inputform.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewDevicePage extends StatefulWidget {
   const NewDevicePage({super.key});
@@ -28,7 +30,21 @@ class _NewDevicePageState extends State<NewDevicePage> {
     });
 
     try {
-      Dispositivo dispositivo = await DispositivoDAO().buscarDispositoPorId(codigo);
+      final prefs = await SharedPreferences.getInstance();
+      // verifica se já existe no armazenamento
+      if (prefs.containsKey('dispositivo_$codigo')) {
+        _mostrarMensagem('Dispositivo já adicionado!');
+        setState(() {
+          _carregando = false;
+        });
+        return;
+      }
+
+      Dispositivo dispositivo = await DispositivoDAO().buscarDispositoPorId(
+        codigo,
+      );
+
+      salvarDadosDispositivos([dispositivo]);
 
       // Retorna o dispositivo completo para a tela anterior
       Navigator.pop(context, dispositivo);
