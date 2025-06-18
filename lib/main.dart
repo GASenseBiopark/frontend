@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
 import 'package:gasense/pages/auth/welcome.dart';
+import 'package:gasense/pages/navegation/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main() => runApp(const BioLabApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final prefs = await SharedPreferences.getInstance();
+  final idUsuario = prefs.getInt('id_usuario');
+
+  runApp(BioLabApp(isLoggedIn: idUsuario != null));
+}
 
 class BioLabApp extends StatelessWidget {
-  const BioLabApp({super.key});
+  final bool isLoggedIn;
+  const BioLabApp({super.key, required this.isLoggedIn});
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +75,7 @@ class BioLabApp extends StatelessWidget {
           titleMedium: TextStyle(color: AppColors.grey),
         ),
       ),
-      home: const WelcomePage(),
+      home: isLoggedIn ? const HomePage() : const WelcomePage(),
     );
   }
 }

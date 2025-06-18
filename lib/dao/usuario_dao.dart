@@ -49,9 +49,7 @@ class UsuarioDAO {
         idUsuario: json['id_usuario'],
         nome: json['nome'],
         email: json['email'],
-        senhaHash: '', // não retorna o hash, por segurança
-        dataCadastro: json['data_cadastro'],
-        admin: false, // se quiser implementar admin, pode adaptar
+        senhaHash: '',
       );
     } else if (response.statusCode == 403) {
       // usuário não encontrado ou senha inválida

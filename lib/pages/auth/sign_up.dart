@@ -34,7 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
         nome: nomeController.text,
         email: emailController.text,
         senhaHash: senhaController.text, // senha pura, o backend faz o hash
-        dataCadastro: DateTime.now(),
+        dataCadastro: DateTime.now().toIso8601String(),
       );
 
       UsuarioDAO dao = UsuarioDAO();

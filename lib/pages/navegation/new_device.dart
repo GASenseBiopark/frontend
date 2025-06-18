@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
+import 'package:gasense/dao/dispositivo_dao.dart';
+import 'package:gasense/models/dispositivo.dart';
 import 'package:gasense/pages/navegation/home.dart';
 import 'package:gasense/widgets/inputform.dart';
 
@@ -12,13 +14,37 @@ class NewDevicePage extends StatefulWidget {
 
 class _NewDevicePageState extends State<NewDevicePage> {
   final TextEditingController _codigoController = TextEditingController();
+  bool _carregando = false;
 
-  void _adicionarDispositivo() {
+  void buscarDispositivo() async {
     final codigo = _codigoController.text.trim();
-
-    if (codigo.isNotEmpty) {
-      Navigator.pop(context, {'codigo': codigo});
+    if (codigo.isEmpty) {
+      _mostrarMensagem('Digite um código');
+      return;
     }
+
+    setState(() {
+      _carregando = true;
+    });
+
+    try {
+      Dispositivo dispositivo = await DispositivoDAO().buscarDispositoPorId(codigo);
+
+      // Retorna o dispositivo completo para a tela anterior
+      Navigator.pop(context, dispositivo);
+    } catch (e) {
+      _mostrarMensagem(e.toString());
+    } finally {
+      setState(() {
+        _carregando = false;
+      });
+    }
+  }
+
+  void _mostrarMensagem(String mensagem) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(mensagem)));
   }
 
   @override
@@ -69,10 +95,9 @@ class _NewDevicePageState extends State<NewDevicePage> {
                   Stack(
                     alignment: Alignment.center,
                     children: [
-                      // Sombra (menor que a imagem)
                       Container(
-                        width: 270, // menor que 200
-                        height: 270, // menor que 200
+                        width: 270,
+                        height: 270,
                         decoration: BoxDecoration(
                           color: Colors.transparent,
                           boxShadow: [
@@ -84,8 +109,6 @@ class _NewDevicePageState extends State<NewDevicePage> {
                           ],
                         ),
                       ),
-
-                      // Imagem principal
                       Image.asset('../assets/device.png', width: 350),
                     ],
                   ),
@@ -99,12 +122,7 @@ class _NewDevicePageState extends State<NewDevicePage> {
                   SizedBox(
                     height: 45,
                     child: ElevatedButton(
-                      onPressed: () {
-                        final codigo = _codigoController.text.trim();
-                        if (codigo.isNotEmpty) {
-                          Navigator.pop(context, {'codigo': codigo});
-                        }
-                      },
+                      onPressed: _carregando ? null : buscarDispositivo,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.grey,
                         foregroundColor: Colors.white,
@@ -116,10 +134,15 @@ class _NewDevicePageState extends State<NewDevicePage> {
                           borderRadius: BorderRadius.circular(15),
                         ),
                       ),
-                      child: Text(
-                        "Adicionar dispositivo",
-                        style: AppText.textoBranco,
-                      ),
+                      child:
+                          _carregando
+                              ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                              : Text(
+                                "Buscar dispositivo",
+                                style: AppText.textoBranco,
+                              ),
                     ),
                   ),
                 ],

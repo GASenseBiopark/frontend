@@ -3,6 +3,7 @@ import 'package:gasense/constants/constants.dart';
 import 'package:gasense/dao/usuario_dao.dart';
 import 'package:gasense/pages/navegation/home.dart';
 import 'package:gasense/pages/auth/sign_up.dart';
+import 'package:gasense/save_data/salvar_dados_usuarios.dart';
 import 'package:gasense/widgets/inputform.dart';
 
 class LogInPage extends StatefulWidget {
@@ -38,17 +39,13 @@ class _LogInPageState extends State<LogInPage> {
 
       if (usuario == null) {
         setState(() {
-          emailError = 'E-mail não encontrado';
+          emailError = '';
+          senhaError = 'E-mail ou senha inválidos!';
         });
         return;
       }
 
-      if (usuario.senhaHash != senha) {
-        setState(() {
-          senhaError = 'Senha incorreta';
-        });
-        return;
-      }
+      await salvarDadosUsuario(usuario);
 
       // Login bem-sucedido
       Navigator.pushReplacement(

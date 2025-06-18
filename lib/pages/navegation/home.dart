@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
+import 'package:gasense/models/dispositivo.dart';
+import 'package:gasense/pages/auth/welcome.dart';
 import 'package:gasense/pages/navegation/new_device.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,9 +21,12 @@ class _HomePageState extends State<HomePage> {
       MaterialPageRoute(builder: (context) => const NewDevicePage()),
     );
 
-    if (resultado != null && resultado is Map<String, String>) {
+    if (resultado != null && resultado is Dispositivo) {
       setState(() {
-        dispositivos.add(resultado);
+        dispositivos.add({
+          'codigo': resultado.idDispositivo,
+          'nome': resultado.nome,
+        });
       });
     }
   }
@@ -29,9 +35,49 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
+      drawer: Drawer(
+        backgroundColor: AppColors.white,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(color: AppColors.blue100),
+              child: Text(
+                'Menu',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.logout_rounded, color: AppColors.black700),
+              title: Text('Sair', style: TextStyle(color: AppColors.black700)),
+              onTap: () async {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.clear();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const WelcomePage()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         centerTitle: true,
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false, // você controla o leading
+        leading: Builder(
+          builder: (context) {
+            return InkWell(
+              borderRadius: BorderRadius.circular(30),
+              onTap: () {
+                Scaffold.of(context).openDrawer();
+              },
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(Icons.menu_rounded, color: AppColors.black700),
+              ),
+            );
+          },
+        ),
         title: Text(
           "Dispositivos",
           style: TextStyle(
@@ -81,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                             width: 50,
                             height: 22,
                           ),
-                          title: Text('Dispositivo ${index + 1}'),
+                          title: Text(item['nome'] ?? 'Sem nome'),
                           subtitle: Text(
                             "Código: ${item['codigo'] ?? 'Sem código'}",
                           ),
