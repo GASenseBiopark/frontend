@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
+import 'package:gasense/pages/auth/log_in.dart';
 import 'package:gasense/pages/auth/welcome.dart';
 import 'package:gasense/pages/navegation/home.dart';
+import 'package:gasense/pages/navegation/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -75,7 +77,8 @@ class BioLabApp extends StatelessWidget {
           titleMedium: TextStyle(color: AppColors.grey),
         ),
       ),
-      home: isLoggedIn ? const HomePage() : const WelcomePage(),
+      // home: isLoggedIn ? const HomePage() : const WelcomePage(),
+      home: LogInPage(),
     );
   }
 }

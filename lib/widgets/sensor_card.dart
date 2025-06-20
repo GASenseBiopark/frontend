@@ -46,7 +46,7 @@ Widget sensorCard(
             Text(
               "$percent%",
               style: const TextStyle(
-                color: Colors.black,
+                color: AppColors.black,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -56,7 +56,7 @@ Widget sensorCard(
         Text(
           "$valor ppm",
           style: const TextStyle(
-            color: Colors.black,
+            color: AppColors.black,
             fontWeight: FontWeight.bold,
           ),
         ),

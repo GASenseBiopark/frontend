@@ -4,6 +4,7 @@ import 'package:gasense/models/dispositivo.dart';
 import 'package:gasense/pages/auth/welcome.dart';
 import 'package:gasense/pages/navegation/tela_graficos.dart';
 import 'package:gasense/pages/navegation/tela_novo_dispositivo.dart';
+import 'package:gasense/pages/navegation/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -71,6 +72,20 @@ class _HomePageState extends State<HomePage> {
                 await prefs.clear();
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => const WelcomePage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.settings, color: AppColors.black700),
+              title: Text(
+                'Configurações',
+                style: TextStyle(color: AppColors.black700),
+              ),
+              onTap: () async {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.clear();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const UserPage()),
                 );
               },
             ),
@@ -148,22 +163,19 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                         child: Material(
-                          color:
-                              Colors
-                                  .transparent,
+                          color: Colors.transparent,
                           borderRadius: BorderRadius.circular(20),
                           child: InkWell(
                             borderRadius: BorderRadius.circular(20),
-                            splashColor: AppColors.grey200.withAlpha(
-                              72,
-                            ),
+                            splashColor: AppColors.grey200.withAlpha(72),
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => TelaGraficos(
-                                    // idDispositivo: item['codigo'],
-                                  ),
+                                  builder:
+                                      (context) => TelaGraficos(
+                                        // idDispositivo: item['codigo'],
+                                      ),
                                 ),
                               );
                             },
