@@ -73,4 +73,8 @@ class Dispositivo {
   String toJson() {
     return jsonEncode(toMap());
   }
+
+  factory Dispositivo.fromJson(String source) {
+    return Dispositivo.fromMap(jsonDecode(source));
+  }
 }

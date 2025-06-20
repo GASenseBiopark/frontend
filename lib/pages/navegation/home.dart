@@ -4,6 +4,7 @@ import 'package:gasense/models/dispositivo.dart';
 import 'package:gasense/pages/auth/welcome.dart';
 import 'package:gasense/pages/navegation/tela_graficos.dart';
 import 'package:gasense/pages/navegation/tela_novo_dispositivo.dart';
+import 'package:gasense/save_data/salvar_dados_dispositivos.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,11 +24,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _loadDispositivos() async {
-    final prefs = await SharedPreferences.getInstance();
-    final listaCodigos = prefs.getStringList('dispositivos') ?? [];
+    final lista = await carregarDispositivos();
 
     setState(() {
-      dispositivos = listaCodigos.map((e) => {'codigo': e, 'nome': e}).toList();
+      dispositivos =
+          lista
+              .map((e) => {'codigo': e.idDispositivo, 'nome': e.nome})
+              .toList();
     });
   }
 
@@ -38,12 +41,8 @@ class _HomePageState extends State<HomePage> {
     );
 
     if (resultado != null && resultado is Dispositivo) {
-      setState(() {
-        dispositivos.add({
-          'codigo': resultado.idDispositivo,
-          'nome': resultado.nome,
-        });
-      });
+      await salvarDispositivo(resultado);
+      _loadDispositivos(); // recarrega a lista com o novo dispositivo salvo
     }
   }
 
@@ -135,87 +134,97 @@ class _HomePageState extends State<HomePage> {
                     itemBuilder: (context, index) {
                       final item = dispositivos[index];
                       return Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
                           color: AppColors.white,
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withAlpha(36),
-                              blurRadius: 10,
-                              offset: const Offset(0, 4),
+                              color: Colors.black.withValues(alpha: 0.15),
+                              blurRadius: 12,
+                              offset: const Offset(0, 6),
                             ),
                           ],
                         ),
                         child: Material(
-                          color:
-                              Colors
-                                  .transparent,
+                          color: Colors.transparent,
                           borderRadius: BorderRadius.circular(20),
                           child: InkWell(
                             borderRadius: BorderRadius.circular(20),
-                            splashColor: AppColors.grey200.withAlpha(
-                              72,
-                            ),
+                            splashColor: AppColors.grey200.withAlpha(72),
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => TelaGraficos(
-                                    // idDispositivo: item['codigo'],
-                                  ),
+                                  builder:
+                                      (context) => TelaGraficos(
+                                        idDispositivo: item['codigo'],
+                                      ),
                                 ),
                               );
                             },
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 16,
-                              ),
-                              leading: Stack(
-                                alignment: Alignment.center,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                    width: 25,
-                                    height: 25,
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withAlpha(80),
-                                          blurRadius: 15,
-                                          offset: Offset(0, 8),
+                                  Center(
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Container(
+                                          width: 200,
+                                          height: 200,
+                                          decoration: BoxDecoration(
+                                            color: Colors.transparent,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black.withAlpha(
+                                                  80,
+                                                ),
+                                                blurRadius: 50,
+                                                offset: Offset(0, 8),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            right: 30,
+                                            left: 30,
+                                          ),
+                                          child: Image.asset(
+                                            '../assets/device.png',
+                                            fit: BoxFit.contain,
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  Image.asset(
-                                    '../assets/device.png',
-                                    fit: BoxFit.contain,
-                                    width: 60,
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      item['nome'] ?? 'Sem nome',
+                                      style: AppText.titulo.copyWith(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.black700,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      "Código: ${item['codigo'] ?? 'Sem código'}",
+                                      style: AppText.textoPequeno.copyWith(
+                                        color: Colors.grey[600],
+                                        fontSize: 14,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ),
                                 ],
-                              ),
-                              title: Text(
-                                item['nome'] ?? 'Sem nome',
-                                style: AppText.titulo.copyWith(
-                                  fontSize: 16,
-                                  color: AppColors.black700,
-                                ),
-                              ),
-                              subtitle: Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: Text(
-                                  "Código: ${item['codigo'] ?? 'Sem código'}",
-                                  style: AppText.textoPequeno.copyWith(
-                                    color: Colors.grey[600],
-                                  ),
-                                ),
-                              ),
-                              trailing: const Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                size: 18,
-                                color: Colors.grey,
                               ),
                             ),
                           ),

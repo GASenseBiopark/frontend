@@ -44,7 +44,7 @@ class _NewDevicePageState extends State<NewDevicePage> {
         codigo,
       );
 
-      salvarDadosDispositivos([dispositivo]);
+      salvarDispositivo(dispositivo);
 
       // Retorna o dispositivo completo para a tela anterior
       Navigator.pop(context, dispositivo);
