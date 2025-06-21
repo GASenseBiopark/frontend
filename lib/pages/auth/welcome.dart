@@ -4,7 +4,7 @@ import 'package:gasense/pages/auth/log_in.dart';
 import 'package:gasense/pages/auth/sign_up.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({Key? key}) : super(key: key);
+  const WelcomePage({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +34,6 @@ class WelcomePage extends StatelessWidget {
               const SizedBox(height: 40),
               SizedBox(
                 width: double.infinity,
-                height: 45,
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.pushReplacement(
@@ -63,10 +62,9 @@ class WelcomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
-                height: 45,
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.pushReplacement(

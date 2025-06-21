@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
 import 'package:gasense/models/dispositivo.dart';
-import 'package:gasense/pages/auth/welcome.dart';
+import 'package:gasense/pages/auth/tela_carregamento.dart';
 import 'package:gasense/pages/navegation/tela_graficos.dart';
 import 'package:gasense/pages/navegation/tela_novo_dispositivo.dart';
 import 'package:gasense/save_data/salvar_dados_dispositivos.dart';
@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Map<String, dynamic>> dispositivos = [];
+  List<Dispositivo> dispositivos = [];
 
   @override
   void initState() {
@@ -27,10 +27,7 @@ class _HomePageState extends State<HomePage> {
     final lista = await carregarDispositivos();
 
     setState(() {
-      dispositivos =
-          lista
-              .map((e) => {'codigo': e.idDispositivo, 'nome': e.nome})
-              .toList();
+      dispositivos = lista;
     });
   }
 
@@ -69,7 +66,9 @@ class _HomePageState extends State<HomePage> {
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.clear();
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const WelcomePage()),
+                  MaterialPageRoute(
+                    builder: (context) => const TelaCarregamento(),
+                  ),
                 );
               },
             ),
@@ -132,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.all(16),
                     itemCount: dispositivos.length,
                     itemBuilder: (context, index) {
-                      final item = dispositivos[index];
+                      final Dispositivo dispositivo = dispositivos[index];
                       return Container(
                         decoration: BoxDecoration(
                           color: AppColors.white,
@@ -157,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                                 MaterialPageRoute(
                                   builder:
                                       (context) => TelaGraficos(
-                                        idDispositivo: item['codigo'],
+                                        dispositivo: dispositivo,
                                       ),
                                 ),
                               );
@@ -193,7 +192,7 @@ class _HomePageState extends State<HomePage> {
                                             left: 30,
                                           ),
                                           child: Image.asset(
-                                            '../assets/device.png',
+                                            'assets/device.PNG',
                                             fit: BoxFit.contain,
                                           ),
                                         ),
@@ -203,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 10),
                                     child: Text(
-                                      item['nome'] ?? 'Sem nome',
+                                      dispositivo.nome,
                                       style: AppText.titulo.copyWith(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -216,7 +215,7 @@ class _HomePageState extends State<HomePage> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 10),
                                     child: Text(
-                                      "Código: ${item['codigo'] ?? 'Sem código'}",
+                                      "Código: ${dispositivo.idDispositivo}",
                                       style: AppText.textoPequeno.copyWith(
                                         color: Colors.grey[600],
                                         fontSize: 14,

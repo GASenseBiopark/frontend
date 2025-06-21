@@ -12,7 +12,7 @@ class LeituraController {
 
   // Busca o histórico inicial
   Future<void> inicializar() async {
-    leituras = await dao.buscarHistorico(idDispositivo, limite: 100);
+    leituras = await dao.buscarHistorico(idDispositivo, limite: 360);
     if (leituras.isNotEmpty) {
       ultimaData = leituras.first.dataHora;
     }

@@ -31,7 +31,7 @@ messaging.onBackgroundMessage(function (payload) {
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: "/logo.png", // (coloque o seu ícone opcional)
+    icon: "/logo2.png", // (coloque o seu ícone opcional)
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);

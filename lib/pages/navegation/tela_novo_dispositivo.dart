@@ -125,7 +125,7 @@ class _NewDevicePageState extends State<NewDevicePage> {
                           ],
                         ),
                       ),
-                      Image.asset('../assets/device.png', width: 350),
+                      Image.asset('assets/device.PNG', width: 350),
                     ],
                   ),
                   const SizedBox(height: 50),
@@ -136,7 +136,6 @@ class _NewDevicePageState extends State<NewDevicePage> {
                   ),
                   const SizedBox(height: 15),
                   SizedBox(
-                    height: 45,
                     child: ElevatedButton(
                       onPressed: _carregando ? null : buscarDispositivo,
                       style: ElevatedButton.styleFrom(
