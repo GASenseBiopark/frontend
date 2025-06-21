@@ -26,7 +26,7 @@ abstract class AppText {
   static TextStyle subtitulo = GoogleFonts.poppins(
     fontWeight: FontWeight.w600,
     fontSize: 24,
-    color: AppColors.blue,
+    color: AppColors.black700,
   );
   static TextStyle textoGrande = GoogleFonts.poppins(
     fontWeight: FontWeight.w600,

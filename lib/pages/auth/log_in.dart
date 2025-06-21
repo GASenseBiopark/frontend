@@ -71,7 +71,6 @@ class _LogInPageState extends State<LogInPage> {
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } catch (e) {
-      // Aqui você pode tratar erros inesperados (problemas de conexão, etc)
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Erro ao realizar login: $e')));

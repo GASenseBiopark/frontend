@@ -72,6 +72,20 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
+            ListTile(
+              leading: Icon(Icons.settings, color: AppColors.black700),
+              title: Text(
+                'Configurações',
+                style: TextStyle(color: AppColors.black700),
+              ),
+              onTap: () async {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.clear();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const UserPage()),
+                );
+              },
+            ),
           ],
         ),
       ),
