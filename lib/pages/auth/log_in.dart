@@ -73,7 +73,7 @@ class _LogInPageState extends State<LogInPage> {
     } catch (e) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Erro ao realizar login: $e')));
+      ).showSnackBar(SnackBar(content: Text('Erro ao realizar login')));
     } finally {
       setState(() {
         _isLoading = false;

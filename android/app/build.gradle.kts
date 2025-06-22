@@ -1,5 +1,5 @@
 plugins {
-    id("gasense")
+    id("com.android.application")
     // START: FlutterFire Configuration
     id("com.google.gms.google-services")
     // END: FlutterFire Configuration

@@ -3,9 +3,13 @@ import 'package:gasense/constants/constants.dart';
 import 'package:gasense/dao/dispositivo_dao.dart';
 import 'package:gasense/models/dispositivo.dart';
 import 'package:gasense/pages/navegation/home.dart';
+import 'package:gasense/pages/navegation/tela_qr_code_scanner.dart';
 import 'package:gasense/save_data/salvar_dados_dispositivos.dart';
 import 'package:gasense/widgets/inputform.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart'
+    show kIsWeb, defaultTargetPlatform, TargetPlatform;
 
 class NewDevicePage extends StatefulWidget {
   const NewDevicePage({super.key});
@@ -17,6 +21,17 @@ class NewDevicePage extends StatefulWidget {
 class _NewDevicePageState extends State<NewDevicePage> {
   final TextEditingController _codigoController = TextEditingController();
   bool _carregando = false;
+
+  bool _deveMostrarCamera() {
+    if (kIsWeb) {
+      // Estamos na web
+      return defaultTargetPlatform == TargetPlatform.android ||
+          defaultTargetPlatform == TargetPlatform.iOS;
+    } else {
+      // Estamos em plataforma nativa (Android ou iOS)
+      return Platform.isAndroid || Platform.isIOS;
+    }
+  }
 
   void buscarDispositivo() async {
     final codigo = _codigoController.text.trim();
@@ -31,7 +46,6 @@ class _NewDevicePageState extends State<NewDevicePage> {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      // verifica se já existe no armazenamento
       if (prefs.containsKey('dispositivo_$codigo')) {
         _mostrarMensagem('Dispositivo já adicionado!');
         setState(() {
@@ -43,10 +57,7 @@ class _NewDevicePageState extends State<NewDevicePage> {
       Dispositivo dispositivo = await DispositivoDAO().buscarDispositoPorId(
         codigo,
       );
-
       salvarDispositivo(dispositivo);
-
-      // Retorna o dispositivo completo para a tela anterior
       Navigator.pop(context, dispositivo);
     } catch (e) {
       _mostrarMensagem(e.toString());
@@ -61,6 +72,17 @@ class _NewDevicePageState extends State<NewDevicePage> {
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text(mensagem)));
+  }
+
+  void abrirLeitorQRCode() async {
+    final codigoLido = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TelaQrCodeScanner()),
+    );
+
+    if (codigoLido != null) {
+      _codigoController.text = codigoLido;
+    }
   }
 
   @override
@@ -133,9 +155,21 @@ class _NewDevicePageState extends State<NewDevicePage> {
                     controller: _codigoController,
                     textoLabel: "Código",
                     icone: Icons.numbers,
+                    sufixo:
+                        _deveMostrarCamera()
+                            ? IconButton(
+                              icon: Icon(
+                                Icons.qr_code_scanner,
+                                color: AppColors.grey,
+                              ),
+                              onPressed: abrirLeitorQRCode,
+                            )
+                            : null,
                   ),
                   const SizedBox(height: 15),
                   SizedBox(
+                    width: double.infinity,
+                    height: 54,
                     child: ElevatedButton(
                       onPressed: _carregando ? null : buscarDispositivo,
                       style: ElevatedButton.styleFrom(

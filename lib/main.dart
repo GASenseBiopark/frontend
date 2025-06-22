@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
 import 'package:gasense/pages/auth/tela_carregamento.dart';
+
 void main() {
   runApp(const GASense());
 }
-
 
 class GASense extends StatelessWidget {
   const GASense({super.key});
@@ -13,7 +13,7 @@ class GASense extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'BioLab Monitor',
+      title: 'GASense',
       theme: ThemeData(
         colorScheme: ColorScheme(
           brightness: Brightness.light,

@@ -9,6 +9,7 @@ class InputFormulario extends StatefulWidget {
   final bool isSenha;
   final String? Function(String?)? validator; // <-- aqui
   final String? errorText;
+  final Widget? sufixo;
 
   const InputFormulario({
     super.key,
@@ -19,6 +20,7 @@ class InputFormulario extends StatefulWidget {
     this.isSenha = false,
     this.validator,
     this.errorText,
+    this.sufixo,
   });
 
   @override
@@ -61,7 +63,7 @@ class _InputFormularioState extends State<InputFormulario> {
                     });
                   },
                 )
-                : null,
+                : widget.sufixo,
         errorText: widget.errorText,
         errorBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.red),
