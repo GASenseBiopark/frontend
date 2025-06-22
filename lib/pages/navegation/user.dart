@@ -168,16 +168,16 @@ class _UserPageState extends State<UserPage> {
                 const SizedBox(height: 20),
                 InputFormulario(
                   controller: emailController,
-                  textoLabel: "Alterar email",
-                  icone: Icons.email_rounded,
+                  textoLabel: "Alterar senha",
+                  icone: Icons.password,
                   isEmail: true,
                   errorText: emailError,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Preencha o email';
+                      return 'Preencha a senha';
                     }
-                    if (!value.contains('@') || !value.contains('.')) {
-                      return 'E-mail inválido';
+                    if (value.length < 8) {
+                      return 'Senha deve ter no mínimo 8 caracteres';
                     }
                     return null;
                   },

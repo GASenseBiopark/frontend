@@ -115,7 +115,8 @@ class _GASenseState extends State<GASense> {
           titleMedium: TextStyle(color: AppColors.grey),
         ),
       ),
-      home: widget.isLoggedIn ? const HomePage() : const WelcomePage(),
+      // home: widget.isLoggedIn ? const HomePage() : const WelcomePage(),
+      home: HomePage(),
     );
   }
 }

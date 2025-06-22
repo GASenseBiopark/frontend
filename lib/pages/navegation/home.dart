@@ -4,6 +4,7 @@ import 'package:gasense/models/dispositivo.dart';
 import 'package:gasense/pages/auth/welcome.dart';
 import 'package:gasense/pages/navegation/tela_graficos.dart';
 import 'package:gasense/pages/navegation/tela_novo_dispositivo.dart';
+import 'package:gasense/pages/navegation/user.dart';
 import 'package:gasense/save_data/salvar_dados_dispositivos.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
