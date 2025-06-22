@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
+import 'package:gasense/dao/token_dao.dart';
 import 'package:gasense/dao/usuario_dao.dart';
+import 'package:gasense/models/usuario.dart';
 import 'package:gasense/pages/navegation/home.dart';
 import 'package:gasense/pages/auth/sign_up.dart';
 import 'package:gasense/save_data/salvar_dados_usuarios.dart';
 import 'package:gasense/widgets/inputform.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LogInPage extends StatefulWidget {
   const LogInPage({super.key});
@@ -35,7 +38,7 @@ class _LogInPageState extends State<LogInPage> {
     final senha = senhaController.text.trim();
 
     try {
-      final usuario = await usuarioDAO.pesquisar(email, senha);
+      final Usuario? usuario = await usuarioDAO.pesquisar(email, senha);
 
       if (usuario == null) {
         setState(() {
@@ -46,6 +49,23 @@ class _LogInPageState extends State<LogInPage> {
       }
 
       await salvarDadosUsuario(usuario);
+
+      // Após salvar o login com sucesso, resgata o token do SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('fcm_token');
+
+      if (token != null) {
+        await TokenDAO().cadastrarTokenPush(
+          usuario.idUsuario.toString(),
+          token,
+        );
+        print(usuario.idUsuario);
+        print("Token enviado para o backend com sucesso.");
+      } else {
+        print("Token ainda não disponível no SharedPreferences.");
+      }
+
+      // Login bem-sucedido
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomePage()),
@@ -53,7 +73,7 @@ class _LogInPageState extends State<LogInPage> {
     } catch (e) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Erro ao realizar login: $e')));
+      ).showSnackBar(SnackBar(content: Text('Erro ao realizar login')));
     } finally {
       setState(() {
         _isLoading = false;

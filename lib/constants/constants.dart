@@ -28,6 +28,11 @@ abstract class AppText {
     fontSize: 24,
     color: AppColors.black700,
   );
+  static TextStyle textoGrande = GoogleFonts.poppins(
+    fontWeight: FontWeight.w600,
+    fontSize: 16,
+    color: AppColors.black,
+  );
   static TextStyle texto = GoogleFonts.poppins(
     fontWeight: FontWeight.w400,
     fontSize: 14,

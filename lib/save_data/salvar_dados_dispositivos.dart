@@ -34,3 +34,15 @@ Future<List<Dispositivo>> carregarDispositivos() async {
 
   return dispositivos;
 }
+
+Future<void> removerDispositivo(String idDispositivo) async {
+  final prefs = await SharedPreferences.getInstance();
+
+  // Remove o dispositivo individual
+  await prefs.remove('dispositivo_$idDispositivo');
+
+  // Atualiza a lista de IDs
+  List<String> listaIds = prefs.getStringList('lista_dispositivos') ?? [];
+  listaIds.remove(idDispositivo);
+  await prefs.setStringList('lista_dispositivos', listaIds);
+}

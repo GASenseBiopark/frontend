@@ -62,7 +62,7 @@ class _SignUpPageState extends State<SignUpPage> {
         // Erro genérico
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text("Erro ao registrar: $mensagem")));
+        ).showSnackBar(SnackBar(content: Text("Erro ao registrar")));
       }
     } finally {
       setState(() {
