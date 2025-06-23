@@ -108,14 +108,7 @@ class _UserPageState extends State<UserPage> {
             );
           },
         ),
-        title: const Text(
-          "Configurações",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-            color: AppColors.black700,
-          ),
-        ),
+        title: Text("Configurações", style: AppText.titulo),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -131,73 +124,92 @@ class _UserPageState extends State<UserPage> {
         ),
         width: double.infinity,
         height: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(30, 30, 30, 20),
-          child: Form(
-            key: _formKey,
-            child: ListView(
-              children: [
-                Text("Editar Perfil", style: AppText.subtitulo),
-                const SizedBox(height: 20),
-                Text("Nome:", style: AppText.texto),
-                Text(
-                  nomeController.text,
-                  style: AppText.texto.copyWith(fontWeight: FontWeight.bold),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(30, 30, 30, 20),
+              child: Form(
+                key: _formKey,
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    Text("Editar Perfil", style: AppText.subtitulo),
+                    const SizedBox(height: 20),
+                    Text("Nome:", style: AppText.texto),
+                    Text(
+                      nomeController.text,
+                      style: AppText.texto.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text("Email:", style: AppText.texto),
+                    Text(
+                      emailController.text,
+                      style: AppText.texto.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    InputFormulario(
+                      controller: nomeController,
+                      textoLabel: "Alterar nome",
+                      icone: Icons.person,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Preencha o nome';
+                        }
+                        if (value.length < 5) {
+                          return 'Nome deve ter no mínimo 5 caracteres';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    InputFormulario(
+                      controller: emailController,
+                      textoLabel: "Alterar senha",
+                      icone: Icons.password,
+                      isEmail: true,
+                      errorText: emailError,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Preencha a senha';
+                        }
+                        if (value.length < 8) {
+                          return 'Senha deve ter no mínimo 8 caracteres';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 32),
+                    ElevatedButton(
+                      onPressed: _salvarAlteracoes,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.blue100,
+                        minimumSize: const Size(double.infinity, 48),
+                      ),
+                      child: const Text("Salvar Alterações"),
+                    ),
+                    const SizedBox(height: 16),
+                    OutlinedButton.icon(
+                      onPressed: _sairConta,
+                      icon: const Icon(Icons.logout),
+                      label: const Text("Sair da Conta"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(
+                          255,
+                          193,
+                          193,
+                          193,
+                        ),
+                        minimumSize: const Size(double.infinity, 48),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 10),
-                Text("Email:", style: AppText.texto),
-                Text(
-                  emailController.text,
-                  style: AppText.texto.copyWith(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 20),
-                InputFormulario(
-                  controller: nomeController,
-                  textoLabel: "Alterar nome",
-                  icone: Icons.person,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Preencha o nome';
-                    }
-                    if (value.length < 5) {
-                      return 'Nome deve ter no mínimo 5 caracteres';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                InputFormulario(
-                  controller: emailController,
-                  textoLabel: "Alterar senha",
-                  icone: Icons.password,
-                  isEmail: true,
-                  errorText: emailError,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Preencha a senha';
-                    }
-                    if (value.length < 8) {
-                      return 'Senha deve ter no mínimo 8 caracteres';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 32),
-                ElevatedButton(
-                  onPressed: _salvarAlteracoes,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.blue100,
-                    minimumSize: const Size(double.infinity, 48),
-                  ),
-                  child: const Text("Salvar Alterações"),
-                ),
-                const SizedBox(height: 16),
-                OutlinedButton.icon(
-                  onPressed: _sairConta,
-                  icon: const Icon(Icons.logout),
-                  label: const Text("Sair da Conta"),
-                ),
-              ],
+              ),
             ),
           ),
         ),

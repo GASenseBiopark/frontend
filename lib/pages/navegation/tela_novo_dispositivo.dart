@@ -100,13 +100,10 @@ class _NewDevicePageState extends State<NewDevicePage> {
             );
           },
         ),
-        title: const Text(
-          "Novo Dispositivo",
-          style: TextStyle(color: AppColors.black700, fontSize: 22),
-        ),
+        title: Text("Novo Dispositivo", style: AppText.titulo),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             transform: GradientRotation(1),
             begin: Alignment.topLeft,
@@ -126,75 +123,78 @@ class _NewDevicePageState extends State<NewDevicePage> {
           child: Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SizedBox(height: 20),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        width: 270,
-                        height: 270,
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withAlpha(50),
-                              blurRadius: 40,
-                              offset: Offset(0, 8),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  double screenWidth = constraints.maxWidth;
+                  double imageWidth;
+                  if (screenWidth < 600) {
+                    imageWidth = screenWidth * 0.8;
+                  } else if (screenWidth < 1000) {
+                    imageWidth = screenWidth * 0.5;
+                  } else {
+                    imageWidth = 400;
+                  }
+                  return ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const SizedBox(height: 20),
+                        Center(
+                          child: Image.asset(
+                            'assets/device.PNG',
+                            width: imageWidth,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        const SizedBox(height: 50),
+                        InputFormulario(
+                          controller: _codigoController,
+                          textoLabel: "Código",
+                          icone: Icons.numbers,
+                          sufixo:
+                              _deveMostrarCamera()
+                                  ? IconButton(
+                                    icon: const Icon(
+                                      Icons.qr_code_scanner,
+                                      color: AppColors.grey,
+                                    ),
+                                    onPressed: abrirLeitorQRCode,
+                                  )
+                                  : null,
+                        ),
+                        const SizedBox(height: 15),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 54,
+                          child: ElevatedButton(
+                            onPressed: _carregando ? null : buscarDispositivo,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.grey,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 32,
+                                vertical: 16,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
                             ),
-                          ],
+                            child:
+                                _carregando
+                                    ? const CircularProgressIndicator(
+                                      color: Colors.white,
+                                    )
+                                    : Text(
+                                      "Buscar dispositivo",
+                                      style: AppText.textoBranco,
+                                    ),
+                          ),
                         ),
-                      ),
-                      Image.asset('assets/device.PNG', width: 350),
-                    ],
-                  ),
-                  const SizedBox(height: 50),
-                  InputFormulario(
-                    controller: _codigoController,
-                    textoLabel: "Código",
-                    icone: Icons.numbers,
-                    sufixo:
-                        _deveMostrarCamera()
-                            ? IconButton(
-                              icon: Icon(
-                                Icons.qr_code_scanner,
-                                color: AppColors.grey,
-                              ),
-                              onPressed: abrirLeitorQRCode,
-                            )
-                            : null,
-                  ),
-                  const SizedBox(height: 15),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 54,
-                    child: ElevatedButton(
-                      onPressed: _carregando ? null : buscarDispositivo,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.grey,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 32,
-                          vertical: 16,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                      child:
-                          _carregando
-                              ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                              : Text(
-                                "Buscar dispositivo",
-                                style: AppText.textoBranco,
-                              ),
+                      ],
                     ),
-                  ),
-                ],
+                  );
+                },
               ),
             ),
           ),

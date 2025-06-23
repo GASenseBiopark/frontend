@@ -122,10 +122,7 @@ class _TelaGraficosState extends State<TelaGraficos> {
             },
           ),
         ],
-        title: const Text(
-          "Leituras",
-          style: TextStyle(color: AppColors.black700, fontSize: 22),
-        ),
+        title: Text("Leituras", style: AppText.titulo),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -232,71 +229,72 @@ class _TelaGraficosState extends State<TelaGraficos> {
       builder: (context, constraints) {
         double cardWidth = (constraints.maxWidth - 8 * 2) / 2;
 
-        // Se tiver bastante espaço (tablet, desktop), coloca 3 por linha
         if (constraints.maxWidth > 600) {
           cardWidth = (constraints.maxWidth - 8 * 3) / 3;
         }
 
-        return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 500),
-          child: Wrap(
-            key: ValueKey(
-              leitura,
-            ), // Importante para o AnimatedSwitcher funcionar
-            alignment: WrapAlignment.center,
-            spacing: 16,
-            runSpacing: 16,
-            children: [
-              buildCardValor(
-                "Temperatura",
-                leitura?.temperatura != null
-                    ? "${leitura!.temperatura!.toStringAsFixed(1)} °C"
-                    : "---",
-                Icons.thermostat_rounded, // ícone de termômetro
-                Colors.deepOrangeAccent,
-                cardWidth,
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final double maxWidth = constraints.maxWidth;
+            const double spacing = 16;
+            final double cardWidth = (maxWidth - spacing) / 2;
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 500),
+              child: Wrap(
+                key: ValueKey(leitura),
+                spacing: spacing,
+                runSpacing: spacing,
+                alignment: WrapAlignment.center,
+                children: [
+                  buildCardValor(
+                    "Temperatura",
+                    leitura?.temperatura != null
+                        ? "${leitura!.temperatura!.toStringAsFixed(1)} °C"
+                        : "---",
+                    Icons.thermostat_rounded,
+                    Colors.deepOrangeAccent,
+                    cardWidth,
+                  ),
+                  buildCardValor(
+                    "Umidade",
+                    leitura?.umidade != null
+                        ? "${leitura!.umidade!.toStringAsFixed(1)} %"
+                        : "---",
+                    Icons.water_drop_rounded,
+                    Colors.lightBlueAccent,
+                    cardWidth,
+                  ),
+                  buildCardValor(
+                    "GLP",
+                    leitura?.gasGlp != null
+                        ? "${leitura!.gasGlp!.toStringAsFixed(1)} ppm"
+                        : "---",
+                    Icons.local_fire_department_rounded,
+                    AppColors.blue,
+                    cardWidth,
+                  ),
+                  buildCardValor(
+                    "Tóxicos",
+                    leitura?.compostosToxicos != null
+                        ? "${leitura!.compostosToxicos!.toStringAsFixed(1)} ppm"
+                        : "---",
+                    Icons.warning_amber_rounded,
+                    Colors.redAccent,
+                    cardWidth,
+                  ),
+                  buildCardValor(
+                    "Metano",
+                    leitura?.gasMetano != null
+                        ? "${leitura!.gasMetano!.toStringAsFixed(1)} ppm"
+                        : "---",
+                    Icons.bubble_chart_rounded,
+                    Colors.greenAccent,
+                    maxWidth,
+                  ),
+                ],
               ),
-              buildCardValor(
-                "Umidade",
-                leitura?.umidade != null
-                    ? "${leitura!.umidade!.toStringAsFixed(1)} %"
-                    : "---",
-                Icons.water_drop_rounded, // ícone de gota
-                Colors.lightBlueAccent,
-                cardWidth,
-              ),
-
-              buildCardValor(
-                "GLP",
-                leitura?.gasGlp != null
-                    ? "${leitura!.gasGlp!.toStringAsFixed(1)} ppm"
-                    : "---",
-                Icons.local_fire_department_rounded,
-                AppColors.blue,
-                cardWidth,
-              ),
-
-              buildCardValor(
-                "Tóxicos",
-                leitura?.compostosToxicos != null
-                    ? "${leitura!.compostosToxicos!.toStringAsFixed(1)} ppm"
-                    : "---",
-                Icons.warning_amber_rounded,
-                Colors.redAccent,
-                cardWidth,
-              ),
-
-              buildCardValor(
-                "Metano",
-                leitura?.gasMetano != null
-                    ? "${leitura!.gasMetano!.toStringAsFixed(1)} ppm"
-                    : "---",
-                Icons.bubble_chart_rounded,
-                Colors.greenAccent,
-                cardWidth,
-              ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

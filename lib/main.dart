@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
 import 'package:gasense/pages/auth/tela_carregamento.dart';
+import 'package:gasense/pages/navegation/home.dart';
 
 void main() {
   runApp(const GASense());
@@ -52,12 +53,7 @@ class GASense extends StatelessWidget {
           titleMedium: TextStyle(color: AppColors.grey),
         ),
       ),
-<<<<<<< HEAD
-      // home: widget.isLoggedIn ? const HomePage() : const WelcomePage(),
-      home: HomePage(),
-=======
-      home: const TelaCarregamento(),
->>>>>>> 0a1e49cde44ea4bd91e4205c44b2650ca576ce87
+      home: const HomePage(),
     );
   }
 }

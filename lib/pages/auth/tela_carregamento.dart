@@ -8,14 +8,14 @@ import 'package:gasense/pages/auth/welcome.dart';
 import 'package:gasense/pages/navegation/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TelaCarregamento extends StatefulWidget {
-  const TelaCarregamento({super.key});
+class LoadingPage extends StatefulWidget {
+  const LoadingPage({super.key});
 
   @override
-  State<TelaCarregamento> createState() => _TelaCarregamentoState();
+  State<LoadingPage> createState() => _LoadingPageState();
 }
 
-class _TelaCarregamentoState extends State<TelaCarregamento> {
+class _LoadingPageState extends State<LoadingPage> {
   bool? isLoggedIn;
 
   // Cria a instância do flutter_local_notifications

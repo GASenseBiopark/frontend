@@ -68,9 +68,7 @@ class _HomePageState extends State<HomePage> {
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.clear();
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => const TelaCarregamento(),
-                  ),
+                  MaterialPageRoute(builder: (context) => const LoadingPage()),
                 );
               },
             ),
@@ -93,7 +91,7 @@ class _HomePageState extends State<HomePage> {
       ),
       appBar: AppBar(
         centerTitle: true,
-        automaticallyImplyLeading: false, // você controla o leading
+        automaticallyImplyLeading: false,
         leading: Builder(
           builder: (context) {
             return InkWell(
@@ -108,14 +106,7 @@ class _HomePageState extends State<HomePage> {
             );
           },
         ),
-        title: Text(
-          "Dispositivos",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-            color: AppColors.black700,
-          ),
-        ),
+        title: Text("Dispositivos", style: AppText.titulo),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -154,10 +145,26 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-                    SvgPicture.asset(
-                      'assets/imagemLaboratorio.svg',
-                      width: MediaQuery.of(context).size.width,
-                      fit: BoxFit.contain,
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        double screenWidth = constraints.maxWidth;
+                        double imageWidth;
+                        if (screenWidth < 600) {
+                          imageWidth = screenWidth * 0.8;
+                        } else if (screenWidth < 1000) {
+                          imageWidth = screenWidth * 0.5;
+                        } else {
+                          imageWidth = screenWidth * 0.30;
+                        }
+                        return ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 700),
+                          child: SvgPicture.asset(
+                            'assets/imagemLaboratorio.svg',
+                            width: imageWidth,
+                            fit: BoxFit.contain,
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -234,15 +241,33 @@ class _HomePageState extends State<HomePage> {
                                                 ],
                                               ),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                right: 30,
-                                                left: 30,
-                                              ),
-                                              child: Image.asset(
-                                                'assets/device.PNG',
-                                                fit: BoxFit.contain,
-                                              ),
+                                            LayoutBuilder(
+                                              builder: (context, constraints) {
+                                                double screenWidth =
+                                                    constraints.maxWidth;
+                                                double imageWidth;
+                                                if (screenWidth < 600) {
+                                                  imageWidth =
+                                                      screenWidth * 0.8;
+                                                } else if (screenWidth < 1000) {
+                                                  imageWidth =
+                                                      screenWidth * 0.5;
+                                                } else {
+                                                  imageWidth =
+                                                      screenWidth * 0.35;
+                                                }
+                                                return ConstrainedBox(
+                                                  constraints:
+                                                      const BoxConstraints(
+                                                        maxWidth: 700,
+                                                      ),
+                                                  child: Image.asset(
+                                                    'assets/device.png',
+                                                    width: imageWidth,
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ],
                                         ),
