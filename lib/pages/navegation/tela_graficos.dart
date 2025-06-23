@@ -29,7 +29,7 @@ class _TelaGraficosState extends State<TelaGraficos> {
     _carregarDados();
 
     // Atualização automática a cada 10 segundos:
-    timer = Timer.periodic(Duration(seconds: 10), (_) => atualizar());
+    timer = Timer.periodic(Duration(seconds: 12), (_) => atualizar());
   }
 
   @override
@@ -227,7 +227,6 @@ class _TelaGraficosState extends State<TelaGraficos> {
   Widget buildResumoAtual(Leitura? leitura) {
     return LayoutBuilder(
       builder: (context, constraints) {
-
         return LayoutBuilder(
           builder: (context, constraints) {
             final double maxWidth = constraints.maxWidth;
@@ -400,7 +399,7 @@ class _TelaGraficosState extends State<TelaGraficos> {
           Text("Gases - Última Hora", style: AppText.subtitulo),
           const SizedBox(height: 16),
           SizedBox(
-            height: 250,
+            height: 270,
             child: LineChart(
               LineChartData(
                 minY: 0,
@@ -413,6 +412,7 @@ class _TelaGraficosState extends State<TelaGraficos> {
                 ),
                 titlesData: FlTitlesData(
                   leftTitles: AxisTitles(
+                    axisNameWidget: Text("PPM", style: AppText.textoPequeno),
                     sideTitles: SideTitles(
                       showTitles: true,
                       interval: 50,
@@ -420,7 +420,21 @@ class _TelaGraficosState extends State<TelaGraficos> {
                     ),
                   ),
                   bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
+                    axisNameWidget: Text("Tempo", style: AppText.textoPequeno),
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      interval: 5,
+                      reservedSize: 20,
+                      getTitlesWidget: (value, meta) {
+                        if (value == 0) {
+                          return Text("Agora", style: AppText.textoPequeno);
+                        }
+                        return Text(
+                          "-${value.toInt()} min",
+                          style: AppText.textoPequeno,
+                        );
+                      },
+                    ),
                   ),
                   rightTitles: AxisTitles(
                     sideTitles: SideTitles(showTitles: false),
@@ -484,7 +498,7 @@ class _TelaGraficosState extends State<TelaGraficos> {
           Text("Temperatura & Umidade - Última Hora", style: AppText.subtitulo),
           const SizedBox(height: 16),
           SizedBox(
-            height: 250,
+            height: 270,
             child: LineChart(
               LineChartData(
                 gridData: FlGridData(
@@ -496,6 +510,10 @@ class _TelaGraficosState extends State<TelaGraficos> {
                 ),
                 titlesData: FlTitlesData(
                   leftTitles: AxisTitles(
+                    axisNameWidget: Text(
+                      "T-°C e U-%",
+                      style: AppText.textoPequeno,
+                    ),
                     sideTitles: SideTitles(
                       showTitles: true,
                       interval: 5,
@@ -503,7 +521,21 @@ class _TelaGraficosState extends State<TelaGraficos> {
                     ),
                   ),
                   bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
+                    axisNameWidget: Text("Tempo", style: AppText.textoPequeno),
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      interval: 5,
+                      reservedSize: 20,
+                      getTitlesWidget: (value, meta) {
+                        if (value == 0) {
+                          return Text("Agora", style: AppText.textoPequeno);
+                        }
+                        return Text(
+                          "-${value.toInt()} min",
+                          style: AppText.textoPequeno,
+                        );
+                      },
+                    ),
                   ),
                   rightTitles: AxisTitles(
                     sideTitles: SideTitles(showTitles: false),
@@ -561,7 +593,7 @@ class _TelaGraficosState extends State<TelaGraficos> {
           data
               .asMap()
               .entries
-              .map((e) => FlSpot(e.key.toDouble(), getY(e.value)))
+              .map((e) => FlSpot(e.key.toDouble() / 6, getY(e.value)))
               .toList(),
       isCurved: true,
       color: color,

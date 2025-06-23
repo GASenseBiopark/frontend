@@ -211,7 +211,7 @@ class _TelaCarregamentoState extends State<TelaCarregamento> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const CircularProgressIndicator(),
+                const CircularProgressIndicator(color: AppColors.black700),
                 const SizedBox(height: 20),
                 Text('Carregando...', style: AppText.texto),
               ],
