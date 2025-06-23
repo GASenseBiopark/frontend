@@ -227,11 +227,6 @@ class _TelaGraficosState extends State<TelaGraficos> {
   Widget buildResumoAtual(Leitura? leitura) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        double cardWidth = (constraints.maxWidth - 8 * 2) / 2;
-
-        if (constraints.maxWidth > 600) {
-          cardWidth = (constraints.maxWidth - 8 * 3) / 3;
-        }
 
         return LayoutBuilder(
           builder: (context, constraints) {

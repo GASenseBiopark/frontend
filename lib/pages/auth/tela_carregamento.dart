@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -8,15 +9,16 @@ import 'package:gasense/pages/auth/welcome.dart';
 import 'package:gasense/pages/navegation/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoadingPage extends StatefulWidget {
-  const LoadingPage({super.key});
+class TelaCarregamento extends StatefulWidget {
+  const TelaCarregamento({super.key});
 
   @override
-  State<LoadingPage> createState() => _LoadingPageState();
+  State<TelaCarregamento> createState() => _TelaCarregamentoState();
 }
 
-class _LoadingPageState extends State<LoadingPage> {
+class _TelaCarregamentoState extends State<TelaCarregamento> {
   bool? isLoggedIn;
+  bool hasWifi = true;
 
   // Cria a instância do flutter_local_notifications
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -29,7 +31,15 @@ class _LoadingPageState extends State<LoadingPage> {
   }
 
   Future<void> _initialize() async {
-    WidgetsFlutterBinding.ensureInitialized();
+    final List<ConnectivityResult> resultados =
+        await Connectivity().checkConnectivity();
+
+    if (!resultados.contains(ConnectivityResult.wifi)) {
+      setState(() {
+        hasWifi = false;
+      });
+      return;
+    }
 
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -119,6 +129,67 @@ class _LoadingPageState extends State<LoadingPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (!hasWifi) {
+      // Mostrar mensagem de erro se não houver Wi-Fi
+      return Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              transform: GradientRotation(1),
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color.fromARGB(255, 255, 255, 255),
+                Color.fromARGB(255, 236, 236, 236),
+              ],
+            ),
+          ),
+          width: double.infinity,
+          height: double.infinity,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.wifi_off_rounded,
+                    size: 64,
+                    color: Colors.redAccent,
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'Conexão Wi-Fi não detectada.\nPor favor, conecte-se a uma rede Wi-Fi para continuar.',
+                    textAlign: TextAlign.center,
+                    style: AppText.texto.copyWith(color: Colors.redAccent),
+                  ),
+                  const SizedBox(height: 24),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        hasWifi = true;
+                        isLoggedIn = null;
+                      });
+                      _initialize(); // tenta novamente
+                    },
+                    child: Text(
+                      'Tentar Novamente',
+                      style: AppText.texto.copyWith(
+                        color: Colors.redAccent,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.redAccent,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     if (isLoggedIn == null) {
       return Scaffold(
         backgroundColor: Colors.white,
@@ -129,8 +200,8 @@ class _LoadingPageState extends State<LoadingPage> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Color.fromARGB(255, 255, 255, 255),
-                Color.fromARGB(255, 236, 236, 236),
+                const Color.fromARGB(255, 255, 255, 255),
+                const Color.fromARGB(255, 236, 236, 236),
               ],
             ),
           ),
@@ -149,7 +220,7 @@ class _LoadingPageState extends State<LoadingPage> {
         ),
       );
     } else {
-      return isLoggedIn! ? const HomePage() : const WelcomePage();
+      return isLoggedIn! ? HomePage() : const WelcomePage();
     }
   }
 }

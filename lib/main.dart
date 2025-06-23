@@ -1,9 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
+import 'package:gasense/firebase_options.dart';
 import 'package:gasense/pages/auth/tela_carregamento.dart';
-import 'package:gasense/pages/navegation/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const GASense());
 }
 
@@ -34,7 +38,7 @@ class GASense extends StatelessWidget {
           centerTitle: true,
         ),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: AppColors.grey,
+          backgroundColor: AppColors.blue,
           foregroundColor: Colors.white,
           shape: CircleBorder(),
         ),
@@ -53,7 +57,7 @@ class GASense extends StatelessWidget {
           titleMedium: TextStyle(color: AppColors.grey),
         ),
       ),
-      home: const HomePage(),
+      home: const TelaCarregamento(),
     );
   }
 }

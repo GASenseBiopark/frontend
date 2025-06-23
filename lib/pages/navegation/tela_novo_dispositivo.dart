@@ -142,7 +142,7 @@ class _NewDevicePageState extends State<NewDevicePage> {
                         const SizedBox(height: 20),
                         Center(
                           child: Image.asset(
-                            'assets/device.PNG',
+                            'assets/device.png',
                             width: imageWidth,
                             fit: BoxFit.contain,
                           ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
-import 'package:gasense/pages/auth/welcome.dart';
+import 'package:gasense/pages/auth/tela_carregamento.dart';
 import 'package:gasense/pages/navegation/home.dart';
 import 'package:gasense/widgets/inputform.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,14 +46,6 @@ class _UserPageState extends State<UserPage> {
     }
   }
 
-  void _sairConta() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const WelcomePage()),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,31 +56,57 @@ class _UserPageState extends State<UserPage> {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(color: AppColors.blue100),
-              child: const Text(
+              decoration: BoxDecoration(color: AppColors.blue),
+              child: Text(
                 'Menu',
-                style: TextStyle(color: Colors.white, fontSize: 24),
+                style: AppText.titulo.copyWith(color: AppColors.white),
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.home, color: AppColors.black700),
+              leading: const Icon(
+                Icons.home_rounded,
+                color: AppColors.black700,
+              ),
               title: const Text(
                 'Home',
                 style: TextStyle(color: AppColors.black700),
               ),
               onTap: () {
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  MaterialPageRoute(builder: (context) => HomePage()),
                 );
               },
             ),
             ListTile(
-              leading: const Icon(Icons.logout, color: AppColors.black700),
+              leading: Icon(Icons.settings_rounded, color: AppColors.black700),
+              title: Text(
+                'Configurações',
+                style: TextStyle(color: AppColors.black700),
+              ),
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => UserPage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.logout_rounded,
+                color: AppColors.black700,
+              ),
               title: const Text(
                 'Sair',
                 style: TextStyle(color: AppColors.black700),
               ),
-              onTap: _sairConta,
+              onTap: () async {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.clear();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const TelaCarregamento(),
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -194,7 +212,15 @@ class _UserPageState extends State<UserPage> {
                     ),
                     const SizedBox(height: 16),
                     OutlinedButton.icon(
-                      onPressed: _sairConta,
+                      onPressed: () async {
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.clear();
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const TelaCarregamento(),
+                          ),
+                        );
+                      },
                       icon: const Icon(Icons.logout),
                       label: const Text("Sair da Conta"),
                       style: ElevatedButton.styleFrom(

@@ -27,10 +27,11 @@ class _HomePageState extends State<HomePage> {
 
   void _loadDispositivos() async {
     final lista = await carregarDispositivos();
-
-    setState(() {
-      dispositivos = lista;
-    });
+    if (mounted) {
+      setState(() {
+        dispositivos = lista;
+      });
+    }
   }
 
   void _navegarParaAdicionarDispositivo() async {
@@ -55,11 +56,38 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(color: AppColors.blue100),
+              decoration: BoxDecoration(color: AppColors.blue),
               child: Text(
                 'Menu',
-                style: TextStyle(color: Colors.white, fontSize: 24),
+                style: AppText.titulo.copyWith(color: AppColors.white),
               ),
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.home_rounded,
+                color: AppColors.black700,
+              ),
+              title: const Text(
+                'Home',
+                style: TextStyle(color: AppColors.black700),
+              ),
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.settings_rounded, color: AppColors.black700),
+              title: Text(
+                'Configurações',
+                style: TextStyle(color: AppColors.black700),
+              ),
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => UserPage()),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.logout_rounded, color: AppColors.black700),
@@ -68,21 +96,9 @@ class _HomePageState extends State<HomePage> {
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.clear();
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const LoadingPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings, color: AppColors.black700),
-              title: Text(
-                'Configurações',
-                style: TextStyle(color: AppColors.black700),
-              ),
-              onTap: () async {
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.clear();
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const UserPage()),
+                  MaterialPageRoute(
+                    builder: (context) => const TelaCarregamento(),
+                  ),
                 );
               },
             ),
