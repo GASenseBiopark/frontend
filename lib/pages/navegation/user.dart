@@ -78,8 +78,11 @@ class _UserPageState extends State<UserPage> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings_rounded, color: AppColors.black700),
-              title: Text(
+              leading: const Icon(
+                Icons.settings_rounded,
+                color: AppColors.black700,
+              ),
+              title: const Text(
                 'Configurações',
                 style: TextStyle(color: AppColors.black700),
               ),
@@ -115,16 +118,15 @@ class _UserPageState extends State<UserPage> {
         centerTitle: true,
         automaticallyImplyLeading: false,
         leading: Builder(
-          builder: (context) {
-            return InkWell(
-              borderRadius: BorderRadius.circular(30),
-              onTap: () => Scaffold.of(context).openDrawer(),
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.menu_rounded, color: AppColors.black700),
+          builder:
+              (context) => InkWell(
+                borderRadius: BorderRadius.circular(30),
+                onTap: () => Scaffold.of(context).openDrawer(),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.menu_rounded, color: AppColors.black700),
+                ),
               ),
-            );
-          },
         ),
         title: Text("Configurações", style: AppText.titulo),
       ),
@@ -134,10 +136,7 @@ class _UserPageState extends State<UserPage> {
             transform: GradientRotation(1),
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color.fromARGB(255, 255, 255, 255),
-              Color.fromARGB(255, 236, 236, 236),
-            ],
+            colors: [Color(0xFFFFFFFF), Color(0xFFECECEC)],
           ),
         ),
         width: double.infinity,
@@ -187,16 +186,16 @@ class _UserPageState extends State<UserPage> {
                     const SizedBox(height: 20),
                     InputFormulario(
                       controller: emailController,
-                      textoLabel: "Alterar senha",
-                      icone: Icons.password,
+                      textoLabel: "Alterar e-mail",
+                      icone: Icons.email_rounded,
                       isEmail: true,
                       errorText: emailError,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Preencha a senha';
+                          return 'Preencha o e-mail';
                         }
-                        if (value.length < 8) {
-                          return 'Senha deve ter no mínimo 8 caracteres';
+                        if (!value.contains("@") || !value.contains(".")) {
+                          return 'E-mail inválido';
                         }
                         return null;
                       },
@@ -223,13 +222,8 @@ class _UserPageState extends State<UserPage> {
                       },
                       icon: const Icon(Icons.logout),
                       label: const Text("Sair da Conta"),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          193,
-                          193,
-                          193,
-                        ),
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 193, 193, 193),
                         minimumSize: const Size(double.infinity, 48),
                       ),
                     ),

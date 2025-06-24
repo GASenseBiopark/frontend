@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gasense/constants/constants.dart';
 import 'package:gasense/firebase_options.dart';
+import 'package:gasense/pages/auth/log_in.dart';
 import 'package:gasense/pages/auth/tela_carregamento.dart';
+import 'package:gasense/pages/navegation/user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,7 +59,7 @@ class GASense extends StatelessWidget {
           titleMedium: TextStyle(color: AppColors.grey),
         ),
       ),
-      home: const TelaCarregamento(),
+      home: const LogInPage(),
     );
   }
 }
