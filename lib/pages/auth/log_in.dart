@@ -8,14 +8,6 @@ import 'package:gasense/pages/auth/sign_up.dart';
 import 'package:gasense/save_data/salvar_dados_usuarios.dart';
 import 'package:gasense/widgets/inputform.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:gasense/models/usuario.dart';
-
-Future<void> salvarDadosUsuario(Usuario usuario) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setInt('usuario_id', usuario.idUsuario ?? 0);
-  await prefs.setString('usuario_nome', usuario.nome ?? '');
-  await prefs.setString('usuario_email', usuario.email ?? '');
-}
 
 class LogInPage extends StatefulWidget {
   const LogInPage({super.key});
@@ -67,10 +59,10 @@ class _LogInPageState extends State<LogInPage> {
           usuario.idUsuario.toString(),
           token,
         );
-        print(usuario.idUsuario);
-        print("Token enviado para o backend com sucesso.");
+        debugPrint(usuario.idUsuario.toString());
+        debugPrint("Token enviado para o backend com sucesso.");
       } else {
-        print("Token ainda não disponível no SharedPreferences.");
+        debugPrint("Token ainda não disponível no SharedPreferences.");
       }
       Navigator.pushReplacement(
         context,

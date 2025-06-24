@@ -69,28 +69,28 @@ class _TelaCarregamentoState extends State<TelaCarregamento> {
         .requestPermission(alert: true, badge: true, sound: true);
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('Permissão concedida para notificações');
+      debugPrint('Permissão concedida para notificações');
     } else if (settings.authorizationStatus == AuthorizationStatus.denied) {
-      print('Permissão negada');
+      debugPrint('Permissão negada');
     }
 
     String? token = await FirebaseMessaging.instance.getToken();
-    print('Token FCM: $token');
+    debugPrint('Token FCM: $token');
 
     if (token != null) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('fcm_token', token);
-      print('Token salvo no SharedPreferences');
+      debugPrint('Token salvo no SharedPreferences');
     }
 
     FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
-      print('Novo token FCM: $newToken');
+      debugPrint('Novo token FCM: $newToken');
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('fcm_token', newToken);
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Mensagem foreground: ${message.messageId}');
+      debugPrint('Mensagem foreground: ${message.messageId}');
 
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
@@ -114,7 +114,7 @@ class _TelaCarregamentoState extends State<TelaCarregamento> {
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('Notificação clicada: ${message.messageId}');
+      debugPrint('Notificação clicada: ${message.messageId}');
     });
   }
 
@@ -124,7 +124,7 @@ class _TelaCarregamentoState extends State<TelaCarregamento> {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    print('Mensagem background: ${message.messageId}');
+    debugPrint('Mensagem background: ${message.messageId}');
   }
 
   @override

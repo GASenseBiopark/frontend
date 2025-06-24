@@ -32,7 +32,12 @@ node_modules/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-/build/16378703a8aecb5c3f04c6aae80e3b73/
+# Ignorar tudo dentro de build/
+build/*
+
+# Exceto a pasta build/web
+!build/web/
+!build/web/**
 
 # Symbolication related
 app.*.symbols
